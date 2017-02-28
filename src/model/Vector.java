@@ -2,10 +2,10 @@ package model;
 
 public class Vector {
 	
-	public int x;
-	public int y;
+	public double x;
+	public double y;
 	
-	public Vector(int x, int y) {
+	public Vector(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -16,6 +16,13 @@ public class Vector {
 	
 	public static Vector add(Vector a, Vector b) {
 		return new Vector(a.x + b.x, a.y + b.y);
+	}
+	
+	public static Vector add(Vector a, double s, Vector b) {
+		return new Vector(
+					a.x + s * b.x,
+					a.y + s * b.y
+				);
 	}
 	
 	public Vector clone() {

@@ -11,6 +11,8 @@ public class Game {
 	
 	public Player[] Players;
 	
+	public State State;
+	
 	private Game() {
 		Random rand = new Random();
 		
@@ -34,35 +36,9 @@ public class Game {
 		this.Players[1] = p2;
 	}
 	
-	/**
-	 * @param deltaTime - time since last frame in seconds
-	 */
-	public void moveUp(double deltaTime) {
-		final int oldY = this.Map.getYPosition();
-		
-		this.Map.moveUp(deltaTime * Options.SPEED_Y);
-		
-		int up = this.Map.getYPosition() - oldY;
-
-		while(up>0) {
-			this.moveUpPlayers();
-			up--;
-		}
-	}
-	
-	private void moveUpPlayers() {
-		for(Player player : this.Players) {
-			if(player.isAlive()) {
-				player.moveUp();
-			}
-		}
-	}
-	
 	public void updatePlayers(double seconds) {
 		for(Player player : this.Players) {
-			if(player.isAlive()) {
-				player.update(seconds);
-			}
+			player.update(seconds, this);
 		}
 	}
 	

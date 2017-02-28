@@ -7,25 +7,30 @@ import javafx.scene.paint.Color;
 public class Tail {
 	public final Color color;
 	
-	private int height;
-	
 	public LinkedList<Vector> points;
 	
-	public Tail(Color color, int x, int y, int height) {
+	private double lastYPos;
+	
+	public Tail(Color color) {
 		this.color = color;
 		
 		this.points = new LinkedList<Vector>();
-		this.height = height;
 		
-		for(int i=0; i<height; i++) {
-			this.points.add(new Vector(x,y-i));
-		}
+		this.lastYPos = 0;
 	}
 	
-	public void addPoint(Vector p) {
-		this.points.push(p);
+	public void update(Vector p, double yCutOff) {
+		if(points.size() == 0) {
+			this.points.push(p);
+			this.lastYPos = p.y;
+		} else {
+			if(p.y - lastYPos > 1) {
+				this.points.push(p);
+				this.lastYPos = p.y;
+			}
+		}
 		
-		this.gc(p.y - height);
+		this.gc(yCutOff);
 	}
 	
 	/**
@@ -33,7 +38,7 @@ public class Tail {
 	 * removes points below the cutoff line
 	 * @param cutoff
 	 */
-	private void gc(int cutoff) {
+	private void gc(double cutoff) {
 		while(points.peekLast().y < cutoff) {
 			points.removeLast();
 		}

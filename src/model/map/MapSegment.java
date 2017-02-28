@@ -2,42 +2,41 @@ package model.map;
 
 public class MapSegment {
 	
-	public final int y;
+	public final double height;
 	
-	public final int left;
+	public final double xLow;
 	
-	public final int right;
+	public final double xHigh;
 	
-	public MapSegment(int x, int y, int width) {
+	public final double y; // low
+	
+	public MapSegment(double x, double y, double height, int dir) {
+		this.height = height;
+		this.xLow = x;
+		this.xHigh = (dir > 0) ? this.xLow + height : this.xLow - height;
 		this.y = y;
-		
-		this.left = x - width/2;
-		
-		this.right = this.left + width;
 	}
 	
-	public MapSegment(MapSegment previous, boolean left) {
-		this.y = previous.y + 1;
+	public MapSegment(MapSegment ms, double height) {
+		this.height = height;
 		
-		if(left) {
-			this.left = previous.left - 1;
-			this.right = previous.right - 1;
-		} else {
-			this.left = previous.left + 1;
-			this.right = previous.right + 1;
-		}
+		this.xLow = ms.xHigh;
+		
+		double dir = ms.xHigh - ms.xLow;
+		this.xHigh = (dir > 0) ? this.xLow + height : this.xLow - height;
+		
+		this.y = ms.y + ms.height;
 	}
 	
-	public MapSegment(MapSegment previous, boolean left, int width) {
-		this.y = previous.y + 1;
+	public MapSegment(double x, double y, double height) {
+		this.height = height;
 		
-		this.left = previous.left + (left ?  - 1 : 1);
+		this.xLow = this.xHigh = x;
 		
-		this.right = this.left + width;
+		this.y = y;
 	}
 	
-	// for debugging purposes
 	public String toString() {
-		return "[MapSegment] {y="+y+", l=" + left + ", r=" + right + "}";
+		return "[MapSegment " + Math.round(this.y) + "]";
 	}
 }

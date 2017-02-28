@@ -24,8 +24,6 @@ public class HighRiser extends Application {
 	private AnimationTimer main;
 	private UserInput input;
 	
-	private GameState state;
-	
 	@Override
 	public void start(Stage primaryStage) {
 		
@@ -37,9 +35,6 @@ public class HighRiser extends Application {
 		
 		// set up user input (temp solution)	
 		input = new UserInput((UserInputReceiver) view);
-		
-		// start paused (waits for keypress)
-		state = new Paused(input, new InGame(game, input));
 		
 		lastFrame = System.nanoTime();
 		
@@ -64,16 +59,14 @@ public class HighRiser extends Application {
 		double delta = diff / DBL_SEC;
 		
 		// update state
-		state.update(delta);
+		//update(delta);
 		
 		// update view(s)
 		view.draw(game);
 		
 		this.lastFrame = now;
 		
-		state = state.nextState();
-		
-		if(state == null) { main.stop(); }
+		// main.stop();
 	}
 	
 }

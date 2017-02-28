@@ -106,15 +106,14 @@ public class Map {
 		this.width = Math.max(Options.MIN_X_SPACE, this.width-1);
 	}
 	
+	public double bottom() {
+		// TODO: implement!
+		return 0;
+	}
+	
 	// for debugging
 	public String toString() {
-		String out = "";
-		
-		for(MapSegment ms : data) {
-			out += ms.toString() + ",\n";
-		}
-		
-		return out;
+		return "[Game]";
 	}
 }
 

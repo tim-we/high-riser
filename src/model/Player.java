@@ -3,13 +3,12 @@ package model;
 import controller.Options;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import model.map.Map;
 
 public class Player {
 	public Vector Position;
 	
-	private double realXPos;
-	
-	private double xSpeed = 0;
+	public Vector Velocity;
 	
 	private boolean userInput = false;
 	
@@ -23,29 +22,27 @@ public class Player {
 		this(Color.RED, 0);
 	}
 	
-	public Player(Color tailColor, int offsetX) {
+	public Player(Color tailColor, double offsetX) {
 		this.Position = new Vector(offsetX, Options.PLAYER_Y_POS);
-		this.realXPos = offsetX;
+		this.Velocity = new Vector(0, Options.SPEED_Y);
 		
-		this.Tail = new Tail(tailColor, this.Position.x, this.Position.y-1, Options.PLAYER_Y_POS);
+		this.Tail = new Tail(tailColor);
 	}
 	
-	public void update(double seconds) {
-		this.xSpeed += (userInput ? -Options.X_ACC : Options.X_ACC) * seconds;
+	public void update(double seconds, Game model) {
+		this.Velocity.x += (userInput ? -Options.X_ACC : Options.X_ACC) * seconds;
 		
-		if(Math.abs(xSpeed) > Options.MAX_SPEED_X) {
-			xSpeed = (xSpeed > 0) ? Options.MAX_SPEED_X : -Options.MAX_SPEED_X;
+		if(Math.abs(Velocity.x) > Options.MAX_SPEED_X) {
+			Velocity.x = (Velocity.x > 0) ? Options.MAX_SPEED_X : -Options.MAX_SPEED_X;
 		}
 		
-		this.realXPos += xSpeed * seconds;
-		
-		this.Position.x = (int) Math.round(this.realXPos);
+		this.move(seconds, model.Map);
 	}
 	
-	public void moveUp() {
-		this.Tail.addPoint(this.Position.clone());
+	public void move(double seconds, Map model) {
+		this.Tail.update(this.Position, model.bottom());
 		
-		this.Position.y++;
+		this.Position = Vector.add(this.Position, seconds, this.Velocity);
 	}
 	
 	public void setUserInput(boolean pressed) {
