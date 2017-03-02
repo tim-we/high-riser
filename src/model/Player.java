@@ -1,6 +1,6 @@
 package model;
 
-import controller.Options;
+import controller.Config;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import model.map.Map;
@@ -23,17 +23,17 @@ public class Player {
 	}
 	
 	public Player(Color tailColor, double offsetX) {
-		this.Position = new Vector(offsetX, Options.PLAYER_Y_POS);
-		this.Velocity = new Vector(0, Options.SPEED_Y);
+		this.Position = new Vector(offsetX, Config.PLAYER_Y_POS);
+		this.Velocity = new Vector(0, Config.SPEED_Y);
 		
 		this.Tail = new Tail(tailColor);
 	}
 	
 	public void update(double seconds, Game model) {
-		this.Velocity.x += (userInput ? -Options.X_ACC : Options.X_ACC) * seconds;
+		this.Velocity.x += (userInput ? -Config.X_ACC : Config.X_ACC) * seconds;
 		
-		if(Math.abs(Velocity.x) > Options.MAX_SPEED_X) {
-			Velocity.x = (Velocity.x > 0) ? Options.MAX_SPEED_X : -Options.MAX_SPEED_X;
+		if(Math.abs(Velocity.x) > Config.MAX_SPEED_X) {
+			Velocity.x = (Velocity.x > 0) ? Config.MAX_SPEED_X : -Config.MAX_SPEED_X;
 		}
 		
 		this.move(seconds, model.Map);

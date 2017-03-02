@@ -1,6 +1,6 @@
 package controller;
 
-public class Options {
+public class Config {
 	
 	public static final int WIDTH = 28;
 	

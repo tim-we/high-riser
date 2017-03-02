@@ -39,6 +39,16 @@ public class MapSegment {
 		this.yHigh = this.yLow + height;
 	}
 	
+	public MapSegment(double width, double height) {
+		this.yLow = 0;
+		this.yHigh = height;
+		
+		final double half = width * 0.5;
+		
+		this.xLowLeft	= this.xHighLeft	= -half;
+		this.xLowRight	= this.xHighRight	=  half;
+	}
+	
 	public String toString() {
 		return "[MapSegment " + Math.round(this.yLow) + "]";
 	}

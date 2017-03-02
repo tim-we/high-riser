@@ -1,6 +1,6 @@
 package view;
 
-import controller.Options;
+import controller.Config;
 import controller.input.UserInputReceiver;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -27,7 +27,7 @@ public class JavaFXView extends View implements UserInputReceiver {
 	public JavaFXView(Stage stage) {
 		super();		
 		
-		stage.setTitle(Options.TITLE);
+		stage.setTitle(Config.TITLE);
 		
 		StackPane root = new StackPane();
 		

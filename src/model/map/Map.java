@@ -3,18 +3,17 @@ package model.map;
 import java.util.ArrayList;
 import java.util.Random;
 
-import controller.Options;
+import controller.Config;
+import model.Camera;
 import model.Vector;
 
 public class Map {
 	
-	private boolean lastDir;
-	
-	public static final double HEIGHT = 392;
-	public static final int START_SEGMENT_LENGTH = 12;
+	public static final double bufferMinLength = 1d;
 	
 	public ArrayList<MapSegment> data;
 	private MapSegment lastMapSegment;
+	private int dir = 0;
 	
 	private Random rand;
 	
@@ -24,25 +23,54 @@ public class Map {
 		
 		this.data = new ArrayList<MapSegment>();
 		
-		/*MapSegment ms = null;
-		int y = 0;
-		// create map start (centered map segments)
-		for(; y<START_SEGMENT_LENGTH; y++) {			
-			ms = new MapSegment(0, y, getWidth(y));
-			
-			data.add(ms);
+		this.data.add(
+						this.lastMapSegment = new MapSegment(getWidth(0), 0.8)
+					 );
+		
+		this.dir = (rand.nextInt(2) == 0) ? -1 : 1;
+		
+		addSegment(0.2);
+		
+		
+	}
+	
+	public void build(Camera cam) {
+		final double yTop = cam.Position.y + bufferMinLength;
+		
+		// add new map segments
+		while(lastMapSegment.yHigh < yTop) {
+			addSegment();
 		}
 		
-		boolean goLeft = lastDir = rand.nextBoolean();
+		final double yBottom = cam.Position.y - 1d;
 		
-		for(; y<HEIGHT; y++) {
-			ms = new MapSegment(ms, goLeft);
-			
-			data.add(ms);
+		// remove old segments
+		while(data.get(0).yHigh < yBottom) {
+			data.remove(0);
 		}
+	}
+	
+	public void addSegment(double height) {
+		MapSegment ms = new MapSegment(
+							this.lastMapSegment,
+							getWidth(this.lastMapSegment.yHigh + height),
+							height,
+							this.dir
+						);
+		
+		this.data.add(ms);
 		
 		this.lastMapSegment = ms;
-		*/
+		
+		if(dir != 0) {			
+			dir = (dir < 0) ? 1 : -1;
+		}
+	}
+	
+	public void addSegment() {
+		double height = rand.nextDouble() * 0.42;
+		
+		addSegment(height);
 	}
 	
 	public boolean isWall(Vector p) {

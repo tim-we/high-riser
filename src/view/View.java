@@ -1,6 +1,6 @@
 package view;
 
-import controller.Options;
+import controller.Config;
 import javafx.scene.paint.Color;
 import model.Game;
 import model.Player;
@@ -12,8 +12,8 @@ import view.colors.Blender;
 public abstract class View {
 	
 	// constants
-	public final int WIDTH = Options.WIDTH;
-	public final int HEIGHT = Options.HEIGHT;
+	public final int WIDTH = Config.WIDTH;
+	public final int HEIGHT = Config.HEIGHT;
 	private final int offsetX = WIDTH/2;
 	
 	public static final int WINDOW_WIDTH = 10;	
@@ -109,7 +109,7 @@ public abstract class View {
 	// calculate view (camera) position
 	private void updatePosition(Game model) {		
 		
-		final MapSegment ms = model.Map.data.get(Options.PLAYER_Y_POS);			
+		final MapSegment ms = model.Map.data.get(Config.PLAYER_Y_POS);			
 		this.Position.x = (ms.left + ms.right) / 2;
 		
 		if(model.Players.length == 1) {
@@ -134,7 +134,7 @@ public abstract class View {
 			
 			drawMapSegment(part, xPos, model);
 			
-			if(Options.SMOOTHING) {
+			if(Config.SMOOTHING) {
 				if(previous != null) {
 					drawMapSegment(part, xPos, 1, smoothAlpha, model);
 				}
@@ -159,7 +159,7 @@ public abstract class View {
 		for(Vector tp : player.Tail.points) {
 			setPixel(toScreen(tp), player.Tail.color);
 			
-			if(Options.SMOOTHING) {
+			if(Config.SMOOTHING) {
 				if(prevPoint != null) {
 					// draw point
 					setPixel(toScreen(tp.x, tp.y - 1), player.Tail.color, smoothAlpha);
