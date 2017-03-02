@@ -8,17 +8,9 @@ import model.Vector;
 
 public class Map {
 	
-	// playable space
-	private int width = 18;
-	
-	private int yPosition = 0;
-	private double yBuffer = 0; // in [0,1)
-	
-	// available height
-	private int HEIGHT = Options.HEIGHT;
-	
 	private boolean lastDir;
 	
+	public static final double HEIGHT = 392;
 	public static final int START_SEGMENT_LENGTH = 12;
 	
 	public ArrayList<MapSegment> data;
@@ -32,11 +24,11 @@ public class Map {
 		
 		this.data = new ArrayList<MapSegment>();
 		
-		MapSegment ms = null;
+		/*MapSegment ms = null;
 		int y = 0;
 		// create map start (centered map segments)
 		for(; y<START_SEGMENT_LENGTH; y++) {			
-			ms = new MapSegment(0, y, width);
+			ms = new MapSegment(0, y, getWidth(y));
 			
 			data.add(ms);
 		}
@@ -50,60 +42,33 @@ public class Map {
 		}
 		
 		this.lastMapSegment = ms;
-	}
-	
-	public int getYPosition() {
-		return yPosition;
-	}
-	
-	public double getYBuffer() {
-		return yBuffer;
-	}
-	
-	public void moveUp(double amount) {
-		
-		this.yBuffer += amount;
-		
-		while(this.yBuffer > 1.0) {
-			this.yPosition++;
-			this.yBuffer -= 1.0;
-			
-			if(rand.nextBoolean()) {
-				this.lastDir = rand.nextBoolean();
-			}
-			
-			MapSegment next = new MapSegment(this.lastMapSegment, this.lastDir, this.width);
-			
-			data.add(next);
-			data.remove(0);
-			
-			this.lastMapSegment = next;
-		}
+		*/
 	}
 	
 	public boolean isWall(Vector p) {
 		return isWall(p.x, p.y);
 	}
 	
-	public boolean isWall(int x, int y) {
-		y = y - this.yPosition;
-		
-		if(0 <= y && y < HEIGHT) {
-			final MapSegment ms = data.get(y);
+	public boolean isWall(double x, double y) {
+		for(int i=0; i<data.size(); i++) {
+			MapSegment ms = data.get(i);
 			
-			return isWall(x, ms);
+			if (ms.yLow <= y && y < ms.yHigh) {
+				final double p = (y - ms.yLow) / (ms.yHigh - ms.yLow);
+				double xLeft	= ms.xLowLeft + p * (ms.xHighLeft - ms.xLowLeft);
+				double xRight	= ms.xLowRight + p * (ms.xHighRight - ms.xLowRight);
+				
+				return x <= xLeft && xRight <= x;
+			}
 		}
 		
 		return true;
 	}
 	
-	public boolean isWall(int x, MapSegment ms) {
-		assert(ms != null);
-		return (x < ms.left) || (ms.right <= x);
-	}
+	// width of playable space
+	private double getWidth(double y) {
+		return 18;
 	
-	public void thinner() {
-		this.width = Math.max(Options.MIN_X_SPACE, this.width-1);
 	}
 	
 	public double bottom() {
