@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import model.Game;
 import model.Vector;
 
-public class JavaFXView extends View implements UserInputReceiver {
+public class JavaFXView implements View, UserInputReceiver {
 	
 	private Canvas canvas;
 	private GraphicsContext ctx;
@@ -67,16 +67,7 @@ public class JavaFXView extends View implements UserInputReceiver {
 		scene.setOnKeyReleased(evh);
 	}
 	
-	private Vector getSize() {
-		return new Vector(
-				2*BORDER + WIDTH  * (WINDOW_WIDTH + WINDOW_X_OFFSET),
-				2*BORDER + HEIGHT * (WINDOW_HEIGHT + WINDOW_Y_OFFSET)
-			);
-	}
-	
-	@Override
 	public void draw(Game model) {
-		this.renderFrame(model);
 		
 		ctx.setFill(Color.BLACK);
 		ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
