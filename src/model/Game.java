@@ -11,6 +11,8 @@ public class Game {
 	
 	public Player[] Players;
 	
+	public Camera Camera;
+	
 	public State State;
 	
 	private Game() {
@@ -40,6 +42,14 @@ public class Game {
 		for(Player player : this.Players) {
 			player.update(seconds, this);
 		}
+	}
+	
+	/**
+	 * time that has passed since last frame in seconds
+	 * @param delta
+	 */
+	public void update(double delta) {
+		
 	}
 	
 }

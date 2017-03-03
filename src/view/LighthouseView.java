@@ -3,8 +3,7 @@ package view;
 import controller.Config;
 import javafx.scene.paint.Color;
 import model.Game;
-import model.Player;
-import model.Vector;
+import model.*;
 import model.map.MapSegment;
 import view.colors.BlendMode;
 import view.colors.Blender;
@@ -23,6 +22,7 @@ public class LighthouseView implements View {
 	public static final int WINDOW_Y_OFFSET = 12;
 	
 	private Game Model;
+	private Camera Camera;
 	protected PixelImage data = new PixelImage(28,14);
 	
 	public Color backgroundColor = new Color(0, 0, 0.42, 1);
@@ -40,8 +40,8 @@ public class LighthouseView implements View {
 		
 	public Vector toScreen(double x, double y) {
 		return new Vector(
-				this.offsetX + x - this.Position.x,
-				HEIGHT - 1 - (y - this.Position.y)
+				this.offsetX + x - Camera.Position.x,
+				HEIGHT - 1 - (y - Camera.Position.y)
 			);
 	}
 		
@@ -50,71 +50,46 @@ public class LighthouseView implements View {
 //		setPixel(p.x, p.y, color);
 //	}
 		
-	public void drawMapSegment(MapSegment ms, int xPos, Game model) {
-		final int y = HEIGHT - 1 - (ms.y - this.Position.y);
+	public void drawMapSegment(MapSegment ms) {
 		
-		if(y < 0 || y >= HEIGHT) {
-			System.err.println("skipped map segment");
-			return;
-		}
-		
-		for(int x=0; x<WIDTH; x++) {
-			Color clr = model.Map.isWall(xPos + x, ms) ? wallColor : backgroundColor;
-							
-			pixels[y][x] = clr;
-		}
 	}
 		
-	public void drawMapSegment(MapSegment ms, int xPos, int yOffset, double opacity, Game model) {
-		final int y = HEIGHT - 1 - (ms.y - this.Position.y) + yOffset;
-		
-		if(y < 0 || y >= HEIGHT) { return; }
-		
-		for(int x=0; x<WIDTH; x++) {
-			Color tmp = model.Map.isWall(xPos + x, ms) ? wallColor : backgroundColor;
-			final double alpha = tmp.getOpacity() * opacity;
-			Color clr = new Color(tmp.getRed(), tmp.getGreen(), tmp.getBlue(), alpha);
-							
-			pixels[y][x] = Blender.blend(BlendMode.NORMAL, clr, pixels[y][x]);
-		}
-	}
-	
-	// calculate view (camera) position
-	private void updatePosition(Game model) {		
-		
-		final MapSegment ms = model.Map.data.get(Config.PLAYER_Y_POS);			
-		this.Position.x = (ms.left + ms.right) / 2;
-		
-		if(model.Players.length == 1) {
-			final Player player = model.Players[0];			
-			this.Position.x = (this.Position.x + player.Position.x) / 2;
-		}
-		
-		this.Position.y = model.Map.getYPosition();
-	}
+//	public void drawMapSegment(MapSegment ms, int xPos, int yOffset, double opacity, Game model) {
+//		final int y = HEIGHT - 1 - (ms.y - this.Position.y) + yOffset;
+//		
+//		if(y < 0 || y >= HEIGHT) { return; }
+//		
+//		for(int x=0; x<WIDTH; x++) {
+//			Color tmp = model.Map.isWall(xPos + x, ms) ? wallColor : backgroundColor;
+//			final double alpha = tmp.getOpacity() * opacity;
+//			Color clr = new Color(tmp.getRed(), tmp.getGreen(), tmp.getBlue(), alpha);
+//							
+//			pixels[y][x] = Blender.blend(BlendMode.NORMAL, clr, pixels[y][x]);
+//		}
+//	}
 	
 	protected void renderFrame(Game model) {
 		
-		updatePosition(model);
-		
-		final int xPos = this.Position.x - this.offsetX;
-		smoothAlpha = model.Map.getYBuffer() * model.Map.getYBuffer();
-		
-		// draw map
-		MapSegment previous = null;
-		
-		for(MapSegment part : model.Map.data) {
-			
-			drawMapSegment(part, xPos, model);
-			
-			if(Config.SMOOTHING) {
-				if(previous != null) {
-					drawMapSegment(part, xPos, 1, smoothAlpha, model);
-				}
-				
-				previous = part;
-			}
-		}
+//		updatePosition(model);
+//		
+//		final int xPos = this.Position.x - this.offsetX;
+//		smoothAlpha = model.Map.getYBuffer() * model.Map.getYBuffer();
+//		
+//		// draw map
+//		MapSegment previous = null;
+//		
+//		for(MapSegment part : model.Map.data) {
+//			
+//			drawMapSegment(part, xPos, model);
+//			
+//			if(Config.SMOOTHING) {
+//				if(previous != null) {
+//					drawMapSegment(part, xPos, 1, smoothAlpha, model);
+//				}
+//				
+//				previous = part;
+//			}
+//		}
 		
 		// draw players on top
 		for(Player player : model.Players) {
@@ -123,25 +98,25 @@ public class LighthouseView implements View {
 	}
 	
 	private void drawPlayer(Player player) {
-		if(!player.isAlive()) { return; }
-		
-		setPixel(toScreen(player.Position), Color.WHITE);
-		
-		// draw tail
-		Vector prevPoint = null;
-		for(Vector tp : player.Tail.points) {
-			setPixel(toScreen(tp), player.Tail.color);
-			
-			if(Config.SMOOTHING) {
-				if(prevPoint != null) {
-					// draw point
-					setPixel(toScreen(tp.x, tp.y - 1), player.Tail.color, smoothAlpha);
-					// TODO: blend colors
-				}
-				
-				prevPoint = tp;
-			}
-		}
+//		if(!player.isAlive()) { return; }
+//		
+//		setPixel(toScreen(player.Position), Color.WHITE);
+//		
+//		// draw tail
+//		Vector prevPoint = null;
+//		for(Vector tp : player.Tail.points) {
+//			setPixel(toScreen(tp), player.Tail.color);
+//			
+//			if(Config.SMOOTHING) {
+//				if(prevPoint != null) {
+//					// draw point
+//					setPixel(toScreen(tp.x, tp.y - 1), player.Tail.color, smoothAlpha);
+//					// TODO: blend colors
+//				}
+//				
+//				prevPoint = tp;
+//			}
+//		}
 	}
 
 	public void draw() {
@@ -154,7 +129,8 @@ public class LighthouseView implements View {
 	}
 
 	public void setModel(Game model) {
-		this.Model = model;		
+		this.Model = model;
+		this.Camera = model.Camera;
 	}
 	
 }

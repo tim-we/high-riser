@@ -19,22 +19,22 @@ public class InGame implements GameState {
 	}
 	
 	public void update(double seconds) {		
-		game.moveUp(seconds);
-		updatePlayers(seconds);
-		
-		checkCollisions();
-		
-		// get thinner ?
-		if(game.Map.getYPosition() - this.lastWidthChangeYPos > 25) {
-			game.Map.thinner();
-			this.lastWidthChangeYPos = game.Map.getYPosition();
-		}
-		
-		// pause?
-		if(input.isPressed(KeyCode.P) || input.isPressed(KeyCode.PAUSE)) {
-			// change game state to paused
-			this.nextState = new Paused(input, this);
-		}
+//		game.moveUp(seconds);
+//		updatePlayers(seconds);
+//		
+//		checkCollisions();
+//		
+//		// get thinner ?
+//		if(game.Map.getYPosition() - this.lastWidthChangeYPos > 25) {
+//			game.Map.thinner();
+//			this.lastWidthChangeYPos = game.Map.getYPosition();
+//		}
+//		
+//		// pause?
+//		if(input.isPressed(KeyCode.P) || input.isPressed(KeyCode.PAUSE)) {
+//			// change game state to paused
+//			this.nextState = new Paused(input, this);
+//		}
 	}
 	
 	private void updatePlayers(double seconds) {

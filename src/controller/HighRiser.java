@@ -59,10 +59,10 @@ public class HighRiser extends Application {
 		double delta = diff / DBL_SEC;
 		
 		// update state
-		//update(delta);
+		game.update(delta);
 		
 		// update view(s)
-		view.draw(game);
+		view.draw();
 		
 		this.lastFrame = now;
 		

@@ -8,6 +8,8 @@ public class Camera {
 	private double widthHalf;
 	private double heightHalf;
 	
+	public double viewYOffset = 0.4d;
+	
 	public void setViewportSize(double width, double height) {
 		ViewportSize = new Vector(width, height);
 		
@@ -20,7 +22,21 @@ public class Camera {
 	}
 	
 	public void update(Game model) {
-		
+		if(model.Players.length > 0) {
+			double y = 0;
+			int n = 0;
+			
+			for(Player p : model.Players) {
+				if(p.isAlive()) {
+					y += p.Position.y;
+					n++;
+				}
+			}
+			
+			if(n > 0) {
+				this.Position.y = y - viewYOffset;
+			}
+		}
 	}
 	
 	public double lowerBound() {

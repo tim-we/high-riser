@@ -10,14 +10,20 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.Camera;
 import model.Game;
+import model.Player;
 import model.Vector;
+import model.map.MapSegment;
 
 public class JavaFXView implements View, UserInputReceiver {
 	
 	private Canvas canvas;
 	private GraphicsContext ctx;
 	private Scene scene;
+	
+	private Game Model;
+	private Camera Camera;
 	
 	public static final int VIEW_WIDTH = 420;
 	public static final int VIEW_HEIGHT = 600;
@@ -36,8 +42,7 @@ public class JavaFXView implements View, UserInputReceiver {
         stage.setScene(scene);
         
         // canvas
-        Vector size = getSize();
-        canvas = new Canvas(size.x, size.y);
+        canvas = new Canvas(500, 540);
         GraphicsContext ctx = canvas.getGraphicsContext2D();        
 		this.ctx = ctx;              
         root.getChildren().add(canvas);
@@ -67,21 +72,28 @@ public class JavaFXView implements View, UserInputReceiver {
 		scene.setOnKeyReleased(evh);
 	}
 	
-	public void draw(Game model) {
+	public void draw() {
 		
 		ctx.setFill(Color.BLACK);
 		ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
-		for(int y=0; y<HEIGHT; y++) {
-			for(int x=0; x<WIDTH; x++) {
-				final int xPos = BORDER + x * (WINDOW_WIDTH + WINDOW_X_OFFSET);
-				final int yPos = BORDER + y * (WINDOW_HEIGHT + WINDOW_Y_OFFSET);
-				
-				ctx.setFill(pixels[y][x]);
-				ctx.fillRect(xPos, yPos, WINDOW_WIDTH, WINDOW_HEIGHT);
-			}
+		for(MapSegment ms : Model.Map.data) {
+			drawMapSegment(ms);
 		}
         
+	}
+	
+	private void drawMapSegment(MapSegment ms) {
+		
+	}
+	
+	private void drawPlayer(Player p) {
+		
+	}
+
+	public void setModel(Game model) {
+		this.Model = model;
+		this.Camera = model.Camera;
 	}
 
 }
