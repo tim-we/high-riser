@@ -22,7 +22,7 @@ public class Game {
 		
 		this.Map = new Map(seed);
 		
-		this.Camera = new Camera();
+		this.Camera = new Camera(0.5);
 	}
 	
 	public Game(Player p1) {

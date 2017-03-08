@@ -4,21 +4,11 @@ public class Camera {
 	
 	public Vector Position = new Vector();
 	
-	private Vector ViewportSize;
-	private double widthHalf;
-	private double heightHalf;
+	public double viewYOffset = 0.5d;
+	public double viewXOffset = 0.5d;
 	
-	public double viewYOffset = 0.4d;
-	
-	public void setViewportSize(double width, double height) {
-		ViewportSize = new Vector(width, height);
-		
-		widthHalf = width / 2d;
-		heightHalf = height / 2d;
-	}
-	
-	public Camera() {
-		setViewportSize(1d,1d);
+	public Camera(double yPos) {
+		this.Position.y = yPos;
 	}
 	
 	public void update(Game model) {
@@ -39,24 +29,11 @@ public class Camera {
 		}
 	}
 	
-	public double lowerBound() {
-		return Position.y - heightHalf;
-	}
-	
-	public double upperBound() {
-		return Position.y + heightHalf;
-	}
-	
-	public double leftBound() {
-		return Position.x - widthHalf;
-	}
-	
-	public double rightBound() {
-		return Position.x + widthHalf;
-	}
-	
-	public Vector getSize() {
-		return ViewportSize;
+	public Vector toViewport(Vector p) {
+		return new Vector(
+				p.x - Position.x + viewXOffset,
+				p.y - Position.y + viewYOffset
+			);
 	}
 	
 }

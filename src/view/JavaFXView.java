@@ -65,6 +65,8 @@ public class JavaFXView implements View, UserInputReceiver {
         
         stage.show();
         //stage.setFullScreen(true);
+        
+        ctx.scale(canvas.getWidth(), canvas.getHeight());
 	}
 	
 	public void setOnKeyPressed(EventHandler<KeyEvent> evh) {
@@ -77,17 +79,20 @@ public class JavaFXView implements View, UserInputReceiver {
 		// WHY?!
 	}
 	
+	/**
+	 * from viewport to screen
+	 * @param p
+	 * @return
+	 */
 	public Vector toScreen(Vector p) {
 		return new Vector(
-				p.x - offsetX,
-				1 - (p.y - offsetY)
+				p.x,
+				1 - p.y
 			);
 	}
 	
 	public void draw() {
 		assert(this.Model != null);
-
-		this.updateCamera();
 		
 		ctx.setFill(Color.GREEN);
 		ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -101,10 +106,10 @@ public class JavaFXView implements View, UserInputReceiver {
 	private void drawMapSegment(MapSegment ms) {
 		assert(ms != null);
 		
-		Vector a = toScreen(new Vector(ms.xLowLeft, ms.yLow));
-		Vector b = toScreen(new Vector(ms.xLowRight, ms.yLow));
-		Vector c = toScreen(new Vector(ms.xHighRight, ms.yHigh));
-		Vector d = toScreen(new Vector(ms.xHighLeft, ms.yHigh));
+		Vector a = toScreen(Camera.toViewport(new Vector(ms.xLowLeft, ms.yLow)));
+		Vector b = toScreen(Camera.toViewport(new Vector(ms.xLowRight, ms.yLow)));
+		Vector c = toScreen(Camera.toViewport(new Vector(ms.xHighRight, ms.yHigh)));
+		Vector d = toScreen(Camera.toViewport(new Vector(ms.xHighLeft, ms.yHigh)));
 		
 		ctx.setFill(Color.BLACK);
 		
@@ -126,13 +131,6 @@ public class JavaFXView implements View, UserInputReceiver {
 	public void setModel(Game model) {
 		this.Model = model;
 		this.Camera = model.Camera;
-	}
-	
-	public void updateCamera() {
-		assert(this.Camera != null);
-		
-		this.offsetX = Camera.leftBound();
-		this.offsetY = Camera.upperBound();
 	}
 
 }

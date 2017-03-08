@@ -48,7 +48,9 @@ public class HighRiser extends Application {
             }
         };
         
-        main.start();
+        //main.start();
+        
+        update(System.nanoTime());
 	}
 	
 	/**

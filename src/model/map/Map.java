@@ -95,7 +95,7 @@ public class Map {
 	
 	// width of playable space
 	private double getWidth(double y) {
-		return 18;
+		return 0.5;
 	
 	}
 	
