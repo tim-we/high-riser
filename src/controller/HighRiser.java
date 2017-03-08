@@ -33,6 +33,8 @@ public class HighRiser extends Application {
 		Player p1 = new Player();
 		game = new Game(p1);
 		
+		view.setModel(game);
+		
 		// set up user input (temp solution)	
 		input = new UserInput((UserInputReceiver) view);
 		

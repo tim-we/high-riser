@@ -25,6 +25,9 @@ public class JavaFXView implements View, UserInputReceiver {
 	private Game Model;
 	private Camera Camera;
 	
+	private double offsetX;
+	private double offsetY;
+	
 	public static final int VIEW_WIDTH = 420;
 	public static final int VIEW_HEIGHT = 600;
 	
@@ -61,7 +64,7 @@ public class JavaFXView implements View, UserInputReceiver {
 //		root.getChildren().add(btn);
         
         stage.show();
-        stage.setFullScreen(true);
+        //stage.setFullScreen(true);
 	}
 	
 	public void setOnKeyPressed(EventHandler<KeyEvent> evh) {
@@ -70,11 +73,23 @@ public class JavaFXView implements View, UserInputReceiver {
 	
 	public void setOnKeyReleased(EventHandler<KeyEvent> evh) {
 		scene.setOnKeyReleased(evh);
+		
+		// WHY?!
+	}
+	
+	public Vector toScreen(Vector p) {
+		return new Vector(
+				p.x - offsetX,
+				1 - (p.y - offsetY)
+			);
 	}
 	
 	public void draw() {
+		assert(this.Model != null);
+
+		this.updateCamera();
 		
-		ctx.setFill(Color.BLACK);
+		ctx.setFill(Color.GREEN);
 		ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
 		for(MapSegment ms : Model.Map.data) {
@@ -84,7 +99,24 @@ public class JavaFXView implements View, UserInputReceiver {
 	}
 	
 	private void drawMapSegment(MapSegment ms) {
+		assert(ms != null);
 		
+		Vector a = toScreen(new Vector(ms.xLowLeft, ms.yLow));
+		Vector b = toScreen(new Vector(ms.xLowRight, ms.yLow));
+		Vector c = toScreen(new Vector(ms.xHighRight, ms.yHigh));
+		Vector d = toScreen(new Vector(ms.xHighLeft, ms.yHigh));
+		
+		ctx.setFill(Color.BLACK);
+		
+		ctx.beginPath();
+		ctx.moveTo(a.x, a.y);
+		ctx.lineTo(b.x, b.y);
+		ctx.lineTo(c.x, c.y);
+		ctx.lineTo(d.x, d.y);
+		
+		ctx.closePath();
+		
+		ctx.fill();
 	}
 	
 	private void drawPlayer(Player p) {
@@ -94,6 +126,13 @@ public class JavaFXView implements View, UserInputReceiver {
 	public void setModel(Game model) {
 		this.Model = model;
 		this.Camera = model.Camera;
+	}
+	
+	public void updateCamera() {
+		assert(this.Camera != null);
+		
+		this.offsetX = Camera.leftBound();
+		this.offsetY = Camera.upperBound();
 	}
 
 }

@@ -2,7 +2,7 @@ package model;
 
 public class Camera {
 	
-	public Vector Position;
+	public Vector Position = new Vector();
 	
 	private Vector ViewportSize;
 	private double widthHalf;

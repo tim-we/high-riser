@@ -21,6 +21,8 @@ public class Game {
 		final int seed = rand.nextInt();
 		
 		this.Map = new Map(seed);
+		
+		this.Camera = new Camera();
 	}
 	
 	public Game(Player p1) {
