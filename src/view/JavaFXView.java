@@ -106,10 +106,10 @@ public class JavaFXView implements View, UserInputReceiver {
 	private void drawMapSegment(MapSegment ms) {
 		assert(ms != null);
 		
-		Vector a = toScreen(Camera.toViewport(new Vector(ms.xLowLeft, ms.yLow)));
-		Vector b = toScreen(Camera.toViewport(new Vector(ms.xLowRight, ms.yLow)));
-		Vector c = toScreen(Camera.toViewport(new Vector(ms.xHighRight, ms.yHigh)));
-		Vector d = toScreen(Camera.toViewport(new Vector(ms.xHighLeft, ms.yHigh)));
+		Vector a = toScreen(Camera.toViewport(ms.bottomLeft));
+		Vector b = toScreen(Camera.toViewport(ms.bottomRight));
+		Vector c = toScreen(Camera.toViewport(ms.topRight));
+		Vector d = toScreen(Camera.toViewport(ms.topLeft));
 		
 		ctx.setFill(Color.BLACK);
 		

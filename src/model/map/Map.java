@@ -38,14 +38,14 @@ public class Map {
 		final double yTop = cam.Position.y + bufferMinLength;
 		
 		// add new map segments
-		while(lastMapSegment.yHigh < yTop) {
+		while(lastMapSegment.yTop < yTop) {
 			addSegment();
 		}
 		
 		final double yBottom = cam.Position.y - 1d;
 		
 		// remove old segments
-		while(data.get(0).yHigh < yBottom) {
+		while(data.get(0).yTop < yBottom) {
 			data.remove(0);
 		}
 	}
@@ -53,7 +53,7 @@ public class Map {
 	public void addSegment(double height) {
 		MapSegment ms = new MapSegment(
 							this.lastMapSegment,
-							getWidth(this.lastMapSegment.yHigh + height),
+							getWidth(this.lastMapSegment.yTop + height),
 							height,
 							this.dir
 						);
@@ -81,10 +81,10 @@ public class Map {
 		for(int i=0; i<data.size(); i++) {
 			MapSegment ms = data.get(i);
 			
-			if (ms.yLow <= y && y < ms.yHigh) {
-				final double p = (y - ms.yLow) / (ms.yHigh - ms.yLow);
-				double xLeft	= ms.xLowLeft + p * (ms.xHighLeft - ms.xLowLeft);
-				double xRight	= ms.xLowRight + p * (ms.xHighRight - ms.xLowRight);
+			if (ms.yBottom <= y && y < ms.yTop) {
+				final double p = (y - ms.yBottom) / (ms.yTop - ms.yBottom);
+				double xLeft	= ms.bottomLeft.x + p * (ms.topLeft.x - ms.bottomLeft.x);
+				double xRight	= ms.bottomRight.x + p * (ms.topRight.x - ms.bottomRight.x);
 				
 				return x <= xLeft && xRight <= x;
 			}

@@ -1,55 +1,51 @@
 package model.map;
 
+import model.Vector;
+
 public class MapSegment {
 	
-	public final double xLowLeft;
-	public final double xLowRight;
+	public final Vector topLeft;
+	public final Vector topRight;
+	public final Vector bottomLeft;
+	public final Vector bottomRight;
 	
-	public final double xHighLeft;	
-	public final double xHighRight;
+	public final double yBottom;	
+	public final double yTop;
 	
-	public final double yLow;	
-	public final double yHigh;
-	
-	public MapSegment(double x, double y, double width, double height, int dir) {
+	public MapSegment(double x, double y, double width, double height, double shear) {
 		final double widthHalf = width * 0.5;
 		
-		double xTop = x;
-		if(dir > 0) { xTop = x + height; }
-		else if(dir < 0) { xTop = x - height; }
+		double xTop = x + shear * height;
 		
-		this.xLowLeft = x - widthHalf;
-		this.xLowRight = x + widthHalf;
-		this.xHighLeft = xTop - widthHalf;
-		this.xHighRight = xTop + widthHalf;
+		this.yTop = y + height;
+		this.yBottom = y;
 		
-		this.yLow = y;
-		this.yHigh = y + height;
+		bottomLeft = new Vector(x - widthHalf, y);
+		bottomRight = new Vector(x + widthHalf, y);
+		topLeft = new Vector(xTop - widthHalf, yTop);
+		topRight = new Vector(xTop + widthHalf, yTop);
 	}
 	
-	public MapSegment(MapSegment ms, double endWidth, double height, int dir) {
-		this.xLowLeft = ms.xHighLeft;
-		this.xLowRight = ms.xHighRight;
+	public MapSegment(MapSegment ms, double endWidth, double height, double shear) {
+		this.bottomLeft = ms.topLeft; // cloning not necessary
+		this.bottomRight = ms.topRight;
 		
-		final double xOffset = (dir > 0) ? height : -height;
-		this.xHighLeft = this.xLowLeft + xOffset;
-		this.xHighRight = this.xHighLeft + endWidth;
+		this.yBottom = ms.yTop;
+		this.yTop = this.yBottom + height;
 		
-		this.yLow = ms.yHigh;
-		this.yHigh = this.yLow + height;
+		Vector offset = new Vector(shear * height, height);
+		
+		this.topLeft	= Vector.add(bottomLeft,  offset);
+		this.topRight	= Vector.add(bottomRight, offset);
+		
+		this.topRight.x = this.topLeft.x + endWidth;
 	}
 	
 	public MapSegment(double width, double height) {
-		this.yLow = 0;
-		this.yHigh = height;
-		
-		final double half = width * 0.5;
-		
-		this.xLowLeft	= this.xHighLeft	= -half;
-		this.xLowRight	= this.xHighRight	=  half;
+		this(0, 0, width, height, 0);
 	}
 	
 	public String toString() {
-		return "[MapSegment " + Math.round(this.yLow) + "]";
+		return "[MapSegment " + Math.round(this.yBottom) + "]";
 	}
 }
