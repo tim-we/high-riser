@@ -52,6 +52,8 @@ public class LighthouseNetwork {
 	public LighthouseNetwork(String host, int port) {
 		this.hostname = host;
 		this.port = port;
+		this.hostname = "localhost";
+		this.port = 8000;
 	}
 
 	/**

@@ -72,7 +72,7 @@ public class Game {
 		updateTimeFactor();		
 		delta *= TimeFactor;
 		
-		this.Rotation += delta * 3;
+		this.Rotation += delta * 8;
 		
 		updatePlayers(delta);
 		
