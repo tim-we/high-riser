@@ -15,6 +15,8 @@ public class Game {
 	
 	public State State;
 	
+	public double Rotation = 0; // in degrees :/
+	
 	private Game() {
 		Random rand = new Random();
 		
@@ -51,7 +53,7 @@ public class Game {
 	 * @param delta
 	 */
 	public void update(double delta) {
-		
+		this.Rotation += delta * 20;
 	}
 	
 }

@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
 import javafx.stage.Stage;
 import model.Camera;
 import model.Game;
@@ -25,13 +26,12 @@ public class JavaFXView implements View, UserInputReceiver {
 	private Game Model;
 	private Camera Camera;
 	
-	private double offsetX;
-	private double offsetY;
-	
 	public static final int VIEW_WIDTH = 420;
 	public static final int VIEW_HEIGHT = 600;
 	
 	public static final int BORDER = 10;
+	
+	private final Affine id;
 	
 	public JavaFXView(Stage stage) {
 		super();		
@@ -66,7 +66,7 @@ public class JavaFXView implements View, UserInputReceiver {
         stage.show();
         //stage.setFullScreen(true);
         
-        ctx.scale(canvas.getWidth(), canvas.getHeight());
+        this.id = ctx.getTransform();
 	}
 	
 	public void setOnKeyPressed(EventHandler<KeyEvent> evh) {
@@ -94,13 +94,25 @@ public class JavaFXView implements View, UserInputReceiver {
 	public void draw() {
 		assert(this.Model != null);
 		
-		ctx.setFill(Color.GREEN);
+		ctx.setTransform(this.id);
+		
+		// draw background (clear)
+		ctx.setFill(new Color(0,1,0,1));
 		ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
+		// set up affine transform
+		ctx.translate(0.5 * canvas.getWidth(), 0.5 * canvas.getHeight());
+		ctx.rotate(Model.Rotation);
+		ctx.translate(-0.5 * canvas.getWidth(), -0.5 * canvas.getHeight());
+		ctx.scale(canvas.getWidth(), canvas.getHeight());
 		
 		for(MapSegment ms : Model.Map.data) {
 			drawMapSegment(ms);
 		}
         
+		for(Player p : Model.Players) {
+			drawPlayer(p);
+		}
 	}
 	
 	private void drawMapSegment(MapSegment ms) {
@@ -111,7 +123,7 @@ public class JavaFXView implements View, UserInputReceiver {
 		Vector c = toScreen(Camera.toViewport(ms.topRight));
 		Vector d = toScreen(Camera.toViewport(ms.topLeft));
 		
-		ctx.setFill(Color.BLACK);
+		ctx.setFill(new Color(0, 0, 0.15, 1));
 		
 		ctx.beginPath();
 		ctx.moveTo(a.x, a.y);
@@ -125,7 +137,17 @@ public class JavaFXView implements View, UserInputReceiver {
 	}
 	
 	private void drawPlayer(Player p) {
+		assert(p != null);
 		
+		Vector pos = toScreen( Camera.toViewport(p.Position) );
+		
+		ctx.beginPath();
+		ctx.setFill(p.getColor());
+		
+		ctx.arc(pos.x, pos.y, 0.025, 0.025, 0, 360);
+		ctx.closePath();
+		
+		ctx.fill();
 	}
 
 	public void setModel(Game model) {

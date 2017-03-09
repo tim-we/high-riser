@@ -8,7 +8,7 @@ public class Config {
 	
 	public static final double PIXEL_RATIO = 2.4; // HEIGHT/WIDTH
 	
-	public static final int PLAYER_Y_POS = (HEIGHT / 3) + 1; // ~10
+	public static final double PLAYER_Y_POS = 0.45;
 	
 	public static final double SPEED_Y = 5;
 	
