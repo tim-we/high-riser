@@ -1,6 +1,5 @@
 package view;
 
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -16,6 +15,8 @@ public class LighthouseNetwork {
 	private String hostname;
 	private int port;
 	private Socket sock;
+	private String user;
+	private String password;
 
 	/**
 	 * Creates a new lighthouse with default parameters. This is using localhost
@@ -24,6 +25,20 @@ public class LighthouseNetwork {
 	public LighthouseNetwork() {
 		this.hostname = "localhost";
 		this.port = 8000;
+	}
+
+	/**
+	 * Creates a new lighthouse using the given username and password. The
+	 * connection is established to localhost at port 8000.
+	 * 
+	 * @param user
+	 *            The hostname of the server to connect to.
+	 * @param port
+	 *            The port to be used.
+	 */
+	public LighthouseNetwork(String user, String password) {
+		this.user = user;
+		this.password = password;
 	}
 
 	/**
@@ -40,6 +55,21 @@ public class LighthouseNetwork {
 	}
 
 	/**
+	 * Creates a new lighthouse connection with the given hostname and port.
+	 * 
+	 * @param host
+	 *            The hostname of the server to connect to.
+	 * @param port
+	 *            The port to be used.
+	 */
+	public LighthouseNetwork(String host, int port, String user, String password) {
+		this.hostname = host;
+		this.port = port;
+		this.user = user;
+		this.password = password;
+	}
+
+	/**
 	 * Establishes the connection to the lighthouse server.
 	 * 
 	 * @throws IOException
@@ -52,7 +82,12 @@ public class LighthouseNetwork {
 		sock = new Socket(hostname, port);
 		OutputStream stream = sock.getOutputStream();
 		stream.write(("POST /LH\r\n").getBytes());
-		stream.write(("a: b\r\n\r\n").getBytes());
+		if (user != null) {
+			stream.write(("user: " + user + "\r\n").getBytes());			
+		}
+		if (password != null) {
+			stream.write(("passwd: " + password + "\r\n").getBytes());			
+		}		stream.write("\r\n".getBytes());
 		stream.flush();
 	}
 

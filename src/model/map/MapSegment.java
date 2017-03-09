@@ -41,8 +41,8 @@ public class MapSegment {
 		this.topRight.x = this.topLeft.x + endWidth;
 	}
 	
-	public MapSegment(double width, double height) {
-		this(0, 0, width, height, 0);
+	public MapSegment(double yPos, double width, double height) {
+		this(0, yPos, width, height, 0);
 	}
 	
 	public String toString() {

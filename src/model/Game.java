@@ -15,7 +15,9 @@ public class Game {
 	
 	public State State;
 	
-	public double Rotation = 0; // in degrees :/
+	public double Rotation = 0d; // in degrees :/
+	
+	public double TimeFactor = 1d;
 	
 	private Game() {
 		Random rand = new Random();
@@ -42,9 +44,9 @@ public class Game {
 		this.Players[1] = p2;
 	}
 	
-	public void updatePlayers(double seconds) {
+	private void updatePlayers(double seconds) {
 		for(Player player : this.Players) {
-			player.update(seconds, this);
+			player.update(seconds);
 		}
 	}
 	
@@ -53,7 +55,14 @@ public class Game {
 	 * @param delta
 	 */
 	public void update(double delta) {
+		delta *= TimeFactor;
+		
 		this.Rotation += delta * 20;
+		
+		updatePlayers(delta);
+		
+		Camera.update(this);
+		Map.update(Camera);
 	}
 	
 }

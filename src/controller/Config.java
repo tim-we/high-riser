@@ -10,16 +10,14 @@ public class Config {
 	
 	public static final double PLAYER_Y_POS = 0.45;
 	
-	public static final double SPEED_Y = 5;
+	public static final double SPEED_Y = 0.5;
 	
-	public static final double MAX_SPEED_X = 10;
+	public static final double MAX_SPEED_X = 0.2;
 	
-	public static final double X_ACC = 42/2; // x axis acceleration
+	public static final double X_ACC = 0.5; // x axis acceleration
 	
 	public static final String TITLE = "Hoch hinaus!"; // High-Riser!
 	
-	public static final boolean SMOOTHING = true;
-	
-	public static final int MIN_X_SPACE = 5;
+	public static final double MIN_X_SPACE = 0.2d;
 	
 }

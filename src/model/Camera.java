@@ -13,18 +13,21 @@ public class Camera {
 	
 	public void update(Game model) {
 		if(model.Players.length > 0) {
-			double y = 0;
+			double x = 0, y = 0;
 			int n = 0;
 			
 			for(Player p : model.Players) {
 				if(p.isAlive()) {
+					x += p.Position.x;
 					y += p.Position.y;
 					n++;
 				}
 			}
 			
 			if(n > 0) {
-				this.Position.y = y - viewYOffset;
+				double f = 1d / (double)n;
+				
+				this.Position = new Vector(f * x, f * y);
 			}
 		}
 	}

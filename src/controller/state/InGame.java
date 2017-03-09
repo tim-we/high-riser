@@ -38,7 +38,7 @@ public class InGame implements GameState {
 	}
 	
 	private void updatePlayers(double seconds) {
-		game.updatePlayers(seconds);
+		//game.updatePlayers(seconds);
 		
 		for(Player player : game.Players) {
 			player.setUserInput(

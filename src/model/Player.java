@@ -29,18 +29,18 @@ public class Player {
 		this.Tail = new Tail(tailColor);
 	}
 	
-	public void update(double seconds, Game model) {
+	public void update(double seconds) {
 		this.Velocity.x += (userInput ? -Config.X_ACC : Config.X_ACC) * seconds;
 		
 		if(Math.abs(Velocity.x) > Config.MAX_SPEED_X) {
 			Velocity.x = (Velocity.x > 0) ? Config.MAX_SPEED_X : -Config.MAX_SPEED_X;
 		}
 		
-		this.move(seconds, model.Map);
+		this.move(seconds);
 	}
 	
-	public void move(double seconds, Map model) {
-		this.Tail.update(this.Position, model.bottom());
+	public void move(double seconds) {
+		this.Tail.add(this.Position);
 		
 		this.Position = Vector.add(this.Position, seconds, this.Velocity);
 	}

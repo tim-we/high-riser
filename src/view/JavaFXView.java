@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import model.Camera;
 import model.Game;
 import model.Player;
+import model.Tail;
 import model.Vector;
 import model.map.MapSegment;
 
@@ -32,6 +33,8 @@ public class JavaFXView implements View, UserInputReceiver {
 	public static final int BORDER = 10;
 	
 	private final Affine id;
+	
+	private static final double PLAYER_RADIUS = 0.02;
 	
 	public JavaFXView(Stage stage) {
 		super();		
@@ -141,16 +144,37 @@ public class JavaFXView implements View, UserInputReceiver {
 		
 		Vector pos = toScreen( Camera.toViewport(p.Position) );
 		
+		drawTail(pos, p.Tail);
+		
 		ctx.beginPath();
 		ctx.setFill(p.getColor());
 		
-		ctx.arc(pos.x, pos.y, 0.025, 0.025, 0, 360);
+		ctx.arc(pos.x, pos.y, PLAYER_RADIUS, PLAYER_RADIUS, 0, 360);
 		ctx.closePath();
 		
 		ctx.fill();
 	}
+	
+	private void drawTail(Vector start, Tail tail) {
+		assert(start != null && tail != null);
+		
+		ctx.setStroke(tail.Color);
+		ctx.beginPath();
+		ctx.moveTo(start.x, start.y);
+		
+		for(Vector point : tail.points) {
+			Vector x = toScreen( Camera.toViewport(point) );
+			
+			ctx.lineTo(x.x, x.y);
+		}
+		
+		ctx.setLineWidth(0.01);
+		ctx.stroke();
+	}
 
 	public void setModel(Game model) {
+		assert(model != null);
+		
 		this.Model = model;
 		this.Camera = model.Camera;
 	}

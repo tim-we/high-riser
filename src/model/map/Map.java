@@ -24,17 +24,17 @@ public class Map {
 		this.data = new ArrayList<MapSegment>();
 		
 		this.data.add(
-						this.lastMapSegment = new MapSegment(getWidth(0), 0.8)
-					 );
+			this.lastMapSegment = new MapSegment(0.05, getWidth(0), 0.8-0.05)
+		);
 		
 		this.dir = (rand.nextInt(2) == 0) ? -1 : 1;
 		
 		addSegment(0.2);
-		
+		addSegment(0.2);
 		
 	}
 	
-	public void build(Camera cam) {
+	public void update(Camera cam) {
 		final double yTop = cam.Position.y + bufferMinLength;
 		
 		// add new map segments
