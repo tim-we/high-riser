@@ -12,9 +12,9 @@ public class Config {
 	
 	public static final double SPEED_Y = 0.5;
 	
-	public static final double MAX_SPEED_X = 0.65;
+	public static final double MAX_SPEED_X = 0.6;
 	
-	public static final double X_ACC = 2.4d; // x axis acceleration
+	public static final double X_ACC = 2.2d; // x axis acceleration
 	
 	public static final String TITLE = "Hoch hinaus!"; // High-Riser!
 	

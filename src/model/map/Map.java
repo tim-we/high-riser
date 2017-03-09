@@ -51,6 +51,8 @@ public class Map {
 	}
 	
 	public void addSegment(double height) {
+		assert(lastMapSegment != null);
+		
 		MapSegment ms = new MapSegment(
 							this.lastMapSegment,
 							getWidth(this.lastMapSegment.yTop + height),
@@ -68,25 +70,30 @@ public class Map {
 	}
 	
 	public void addSegment() {
-		double height = rand.nextDouble() * 0.42;
+		double height = 0.1 + rand.nextDouble() * 0.42;
 		
 		addSegment(height);
 	}
 	
 	public boolean isWall(Vector p) {
+		assert(p != null);
+		
 		return isWall(p.x, p.y);
 	}
 	
 	public boolean isWall(double x, double y) {
-		for(int i=0; i<data.size(); i++) {
-			MapSegment ms = data.get(i);
+		for(MapSegment ms : data) {
 			
 			if (ms.yBottom <= y && y < ms.yTop) {
-				final double p = (y - ms.yBottom) / (ms.yTop - ms.yBottom);
+				
+				double p = (y - ms.yBottom) / (ms.yTop - ms.yBottom);
+				
+				assert(0d <= p && p <= 1d);
+				
 				double xLeft	= ms.bottomLeft.x + p * (ms.topLeft.x - ms.bottomLeft.x);
 				double xRight	= ms.bottomRight.x + p * (ms.topRight.x - ms.bottomRight.x);
 				
-				return x <= xLeft && xRight <= x;
+				return x < xLeft || xRight < x;
 			}
 		}
 		

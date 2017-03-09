@@ -46,7 +46,18 @@ public class Game {
 	
 	private void updatePlayers(double seconds) {
 		for(Player player : this.Players) {
-			player.update(seconds);
+			if(player.isAlive()) {
+				
+				// move, accelerate, tail, etc ...
+				player.update(seconds);
+				
+				// check collisions...
+				if(Map.isWall(player.Position)) {
+					System.out.println("wall collision!");
+					player.die();
+				}
+				
+			}
 		}
 	}
 	

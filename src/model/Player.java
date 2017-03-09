@@ -59,5 +59,7 @@ public class Player {
 	
 	public void die() {
 		this.alive = false;
+		
+		System.out.println("Player died.");
 	}
 }
