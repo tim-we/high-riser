@@ -20,4 +20,6 @@ public class Config {
 	
 	public static final double MIN_X_SPACE = 0.2d;
 	
+	public static final boolean fillGaps = true;
+	
 }

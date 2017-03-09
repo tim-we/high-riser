@@ -2,6 +2,8 @@ package view;
 
 import controller.Config;
 import controller.input.UserInputReceiver;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -20,15 +22,16 @@ import model.map.MapSegment;
 
 public class JavaFXView implements View, UserInputReceiver {
 	
-	private Canvas canvas;
+	protected Canvas canvas;
 	private GraphicsContext ctx;
 	private Scene scene;
 	
 	private Game Model;
 	private Camera Camera;
 	
-	public static final int VIEW_WIDTH = 420;
-	public static final int VIEW_HEIGHT = 600;
+	protected double VIEW_WIDTH = 500;
+	protected double VIEW_HEIGHT = 540;
+	private boolean resized = false;
 	
 	public static final int BORDER = 10;
 	
@@ -36,8 +39,15 @@ public class JavaFXView implements View, UserInputReceiver {
 	
 	private static final double PLAYER_RADIUS = 0.02;
 	
-	public JavaFXView(Stage stage) {
-		super();		
+	public JavaFXView() {
+		canvas = new Canvas(VIEW_WIDTH, VIEW_HEIGHT);
+        GraphicsContext ctx = canvas.getGraphicsContext2D();        
+		this.ctx = ctx;
+		
+		this.id = ctx.getTransform();
+	}
+	
+	public JavaFXView(Stage stage) {	
 		
 		stage.setTitle(Config.TITLE);
 		
@@ -46,9 +56,10 @@ public class JavaFXView implements View, UserInputReceiver {
 		scene = new Scene(root, VIEW_WIDTH, VIEW_HEIGHT, Color.BLACK);
 		
         stage.setScene(scene);
+        //setUpResizeListener(scene);
         
         // canvas
-        canvas = new Canvas(500, 540);
+        canvas = new Canvas(VIEW_WIDTH, VIEW_HEIGHT);
         GraphicsContext ctx = canvas.getGraphicsContext2D();        
 		this.ctx = ctx;              
         root.getChildren().add(canvas);
@@ -78,9 +89,23 @@ public class JavaFXView implements View, UserInputReceiver {
 	
 	public void setOnKeyReleased(EventHandler<KeyEvent> evh) {
 		scene.setOnKeyReleased(evh);
-		
-		// WHY?!
 	}
+	
+	/*private void setUpResizeListener(Scene scene) {
+		scene.widthProperty().addListener(new ChangeListener<Number>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+		        resized = true;
+		    }
+		});
+		
+		scene.heightProperty().addListener(new ChangeListener<Number>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+		        resized = true;
+		    }
+		});
+	}*/
 	
 	/**
 	 * from viewport to screen
@@ -94,14 +119,24 @@ public class JavaFXView implements View, UserInputReceiver {
 			);
 	}
 	
-	public void draw() {
+	private void applyResize() {
+		VIEW_WIDTH = scene.getWidth();
+		VIEW_HEIGHT = scene.getHeight();
+		
+		canvas.setWidth(VIEW_WIDTH);
+		canvas.setHeight(VIEW_HEIGHT);
+		
+		resized = false;
+	}
+	
+	protected void render() {
 		assert(this.Model != null);
 		
 		ctx.setTransform(this.id);
 		
 		// draw background (clear)
 		ctx.setFill(new Color(0,1,0,1));
-		ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		ctx.fillRect(0, 0, VIEW_WIDTH, VIEW_HEIGHT);
 		
 		// set up affine transform
 		ctx.translate(0.5 * canvas.getWidth(), 0.5 * canvas.getHeight());
@@ -118,6 +153,12 @@ public class JavaFXView implements View, UserInputReceiver {
 		}
 	}
 	
+	public void draw() {
+		//if(this.resized) { applyResize(); }
+		
+		render();
+	}
+	
 	private void drawMapSegment(MapSegment ms) {
 		assert(ms != null);
 		
@@ -126,7 +167,8 @@ public class JavaFXView implements View, UserInputReceiver {
 		Vector c = toScreen(Camera.toViewport(ms.topRight));
 		Vector d = toScreen(Camera.toViewport(ms.topLeft));
 		
-		ctx.setFill(new Color(0, 0, 0.15, 1));
+		//ctx.setFill(new Color(0, 0, 0.15, 1));
+		ctx.setFill(Color.BLACK);
 		
 		ctx.beginPath();
 		ctx.moveTo(a.x, a.y);
@@ -137,6 +179,12 @@ public class JavaFXView implements View, UserInputReceiver {
 		ctx.closePath();
 		
 		ctx.fill();
+		
+		if(Config.fillGaps) {
+			ctx.setStroke(ctx.getFill());
+			ctx.setLineWidth(0.002);
+			ctx.stroke();
+		}
 	}
 	
 	private void drawPlayer(Player p) {

@@ -1,5 +1,8 @@
 package controller;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import controller.input.*;
 import controller.state.*;
 import javafx.animation.AnimationTimer;
@@ -20,6 +23,7 @@ public class HighRiser extends Application {
 	private long lastFrame;
 
 	private View view;
+	private View lhview;
 	private Game game;
 	private AnimationTimer main;
 	private UserInput input;
@@ -28,12 +32,24 @@ public class HighRiser extends Application {
 	public void start(Stage primaryStage) {
 		
 		// set up view
+		primaryStage.setResizable(false);
 		view = new JavaFXView(primaryStage);
+		
+		try {
+			lhview = new LighthouseView();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		Player p1 = new Player();
 		game = new Game(p1);
 		
 		view.setModel(game);
+		if(lhview != null) { lhview.setModel(game); }
 		
 		// set up user input (temp solution)	
 		input = new UserInput((UserInputReceiver) view);
@@ -69,6 +85,7 @@ public class HighRiser extends Application {
 		
 		// update view(s)
 		view.draw();
+		if(lhview != null) { lhview.draw(); }
 		
 		this.lastFrame = now;
 		
