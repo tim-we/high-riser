@@ -19,6 +19,8 @@ public class Game {
 	
 	public double TimeFactor = 1d;
 	
+	public double RealTimeTotal = 0d;
+	
 	private Game() {
 		Random rand = new Random();
 		
@@ -66,6 +68,8 @@ public class Game {
 	 * @param delta
 	 */
 	public void update(double delta) {
+		RealTimeTotal += delta;
+		updateTimeFactor();		
 		delta *= TimeFactor;
 		
 		this.Rotation += delta * 3;
@@ -74,6 +78,17 @@ public class Game {
 		
 		Camera.update(this);
 		Map.update(Camera);
+	}
+	
+	private void updateTimeFactor() {
+		assert(RealTimeTotal >= 0d);
+		
+		if(RealTimeTotal < 2d) {
+			TimeFactor = 0.4d + 0.3d * RealTimeTotal;
+			return;
+		}
+		
+		TimeFactor = 1d;
 	}
 	
 }
