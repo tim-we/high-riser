@@ -37,17 +37,22 @@ public class JavaFXView implements View, UserInputReceiver {
 	
 	private final Affine id;
 	
-	private static final double PLAYER_RADIUS = 0.02;
+	private static final double PLAYER_RADIUS = 0.04;
+	private static final double TAIL_WIDTH = 0.035;
 	
 	public JavaFXView() {
 		canvas = new Canvas(VIEW_WIDTH, VIEW_HEIGHT);
         GraphicsContext ctx = canvas.getGraphicsContext2D();        
 		this.ctx = ctx;
 		
+		setSize(28,14);
+		
 		this.id = ctx.getTransform();
 	}
 	
 	public JavaFXView(Stage stage) {	
+		
+		setSize(500, 540);
 		
 		stage.setTitle(Config.TITLE);
 		
@@ -139,10 +144,10 @@ public class JavaFXView implements View, UserInputReceiver {
 		ctx.fillRect(0, 0, VIEW_WIDTH, VIEW_HEIGHT);
 		
 		// set up affine transform
-		ctx.translate(0.5 * canvas.getWidth(), 0.5 * canvas.getHeight());
+		ctx.translate(0.5 * VIEW_WIDTH, 0.5 * VIEW_HEIGHT);
 		ctx.rotate(Model.Rotation);
-		ctx.translate(-0.5 * canvas.getWidth(), -0.5 * canvas.getHeight());
-		ctx.scale(canvas.getWidth(), canvas.getHeight());
+		ctx.translate(-0.5 * VIEW_WIDTH, -0.5 * VIEW_HEIGHT);
+		ctx.scale(VIEW_WIDTH, VIEW_HEIGHT);
 		
 		for(MapSegment ms : Model.Map.data) {
 			drawMapSegment(ms);
@@ -207,7 +212,7 @@ public class JavaFXView implements View, UserInputReceiver {
 		assert(start != null && tail != null);
 		
 		ctx.setStroke(tail.Color);
-		ctx.setLineWidth(0.01);
+		ctx.setLineWidth(TAIL_WIDTH);
 		ctx.beginPath();
 		
 		ctx.moveTo(start.x, start.y);
@@ -227,5 +232,9 @@ public class JavaFXView implements View, UserInputReceiver {
 		this.Model = model;
 		this.Camera = model.Camera;
 	}
-
+	
+	public void setSize(double width, double height) {
+		VIEW_WIDTH = width;
+		VIEW_HEIGHT = height;
+	}	
 }

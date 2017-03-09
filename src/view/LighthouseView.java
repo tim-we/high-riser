@@ -17,9 +17,6 @@ public class LighthouseView extends JavaFXView implements View {
 	
 	private byte[] data = new byte[28 * 14 * 3];
 	
-	protected double VIEW_WIDTH = 28;
-	protected double VIEW_HEIGHT = 14;
-	
 	private WritableImage img = new WritableImage(28,14);
 	private PixelReader pr = img.getPixelReader();
 	
@@ -27,6 +24,8 @@ public class LighthouseView extends JavaFXView implements View {
 	
 	public LighthouseView() throws UnknownHostException, IOException {
 		super();
+		
+		setSize(28,14);
 		
 		LHNetwork.connect();
 	}
