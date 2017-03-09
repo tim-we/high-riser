@@ -40,7 +40,7 @@ public class Player {
 	}
 	
 	public void move(double seconds) {
-		this.Tail.add(this.Position);
+		this.Tail.add(this.Position, seconds );
 		
 		this.Position = Vector.add(this.Position, seconds, this.Velocity);
 	}

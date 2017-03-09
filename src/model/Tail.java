@@ -9,27 +9,24 @@ public class Tail {
 	
 	public LinkedList<Vector> points;
 	
-	private static final int Length = 42;
+	private static final int Length = 30;
 	
-	private double lastYPos;
+	private static final double pointDelay = 0.04d; // seconds
+	
+	private double time = pointDelay;
 	
 	public Tail(Color color) {
 		this.Color = color;
 		
 		this.points = new LinkedList<Vector>();
-		
-		this.lastYPos = 0;
 	}
 	
-	public void add(Vector p) {
-		if(points.size() == 0) {
+	public void add(Vector p, double seconds) {
+		time += seconds;
+		
+		if(time >= pointDelay) {
 			this.points.push(p);
-			this.lastYPos = p.y;
-		} else {
-			if(p.y - lastYPos > 1) {
-				this.points.push(p);
-				this.lastYPos = p.y;
-			}
+			time = 0d;
 		}
 		
 		this.gc();

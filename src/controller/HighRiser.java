@@ -62,6 +62,8 @@ public class HighRiser extends Application {
 		long diff = now - lastFrame;
 		double delta = diff / DBL_SEC;
 		
+		handleUserInput();
+		
 		// update state
 		game.update(delta);
 		
@@ -71,6 +73,14 @@ public class HighRiser extends Application {
 		this.lastFrame = now;
 		
 		// main.stop();
+	}
+	
+	private synchronized void handleUserInput() {
+		for(Player player : game.Players) {
+			player.setUserInput(
+					input.isPressed(player.keycode)
+				);
+		}
 	}
 	
 }

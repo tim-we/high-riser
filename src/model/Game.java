@@ -57,7 +57,7 @@ public class Game {
 	public void update(double delta) {
 		delta *= TimeFactor;
 		
-		this.Rotation += delta * 20;
+		this.Rotation += delta * 3;
 		
 		updatePlayers(delta);
 		

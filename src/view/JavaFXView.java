@@ -159,7 +159,9 @@ public class JavaFXView implements View, UserInputReceiver {
 		assert(start != null && tail != null);
 		
 		ctx.setStroke(tail.Color);
+		ctx.setLineWidth(0.01);
 		ctx.beginPath();
+		
 		ctx.moveTo(start.x, start.y);
 		
 		for(Vector point : tail.points) {
@@ -168,7 +170,6 @@ public class JavaFXView implements View, UserInputReceiver {
 			ctx.lineTo(x.x, x.y);
 		}
 		
-		ctx.setLineWidth(0.01);
 		ctx.stroke();
 	}
 
