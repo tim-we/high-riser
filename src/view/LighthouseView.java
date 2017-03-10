@@ -3,13 +3,9 @@ package view;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import controller.Config;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import model.Game;
-import model.*;
 
 public class LighthouseView extends JavaFXView implements View {
 	
@@ -20,12 +16,17 @@ public class LighthouseView extends JavaFXView implements View {
 	private WritableImage img = new WritableImage(28,14);
 	private PixelReader pr = img.getPixelReader();
 	
-	private boolean skip = false;
+	private long lastFrame;
+	private int MSPerFrame = 33; // milliseconds per frame
 	
 	public LighthouseView() throws UnknownHostException, IOException {
 		super();
 		
 		setSize(28,14);
+		
+		setFPS(30);
+		
+		lastFrame = System.currentTimeMillis();
 		
 		LHNetwork.connect();
 	}
@@ -52,22 +53,27 @@ public class LighthouseView extends JavaFXView implements View {
 	}
 	
 	public void draw() {
-		if(skip) {
-			skip = false;
-		} else {
-			skip = true;
-			
-			render();
-			
-			toByteArray();
-			
-			try {
-				LHNetwork.send(data);
-			} catch (IOException e) {
-				System.out.println("could not send image");
-			}
-		}
+		if(System.currentTimeMillis() - lastFrame < MSPerFrame) {
+			return;
+		}		
 		
+		render();
+		
+		toByteArray();
+		
+		lastFrame = System.currentTimeMillis();
+		
+		try {
+			LHNetwork.send(data);
+		} catch (IOException e) {
+			System.out.println("could not send image");
+		}
+	}
+	
+	public void setFPS(int fps) {
+		if(fps < 1) { throw new IllegalArgumentException("FPS must be > 0"); }
+		
+		MSPerFrame = 1000 / fps;
 	}
 	
 	/*

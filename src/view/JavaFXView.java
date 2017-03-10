@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 import model.Camera;
 import model.Game;
@@ -34,7 +35,7 @@ public class JavaFXView implements View, UserInputReceiver {
 	protected double VIEW_WIDTH = 500;
 	protected double VIEW_HEIGHT = 540;
 	private double Ratio = VIEW_WIDTH / VIEW_HEIGHT;
-	private double WorldSize = 1d;
+	private double WorldScale = 1d;
 	private double PixelRatio = 1d;
 	//private boolean resized = false;
 	
@@ -156,13 +157,8 @@ public class JavaFXView implements View, UserInputReceiver {
 		ctx.setFill(new Color(0,1,0,1));
 		ctx.fillRect(0, 0, VIEW_WIDTH, VIEW_HEIGHT);
 		
-		// set up affine transform
-		ctx.translate(0.5 * VIEW_WIDTH, 0.5 * VIEW_HEIGHT);
-		ctx.rotate(Model.Rotation);
-		ctx.scale(PixelRatio, 1d);
-		ctx.translate(-0.5 * VIEW_WIDTH, -0.5 * VIEW_HEIGHT);
-		ctx.scale(WorldSize, WorldSize);
-		//ctx.translate(-0.5 * WorldSize * PixelRatio, -0.5 * WorldSize);
+		// set up affine transform 
+		setTransform();
 		
 		for(MapSegment ms : Model.Map.data) {
 			drawMapSegment(ms);
@@ -171,6 +167,20 @@ public class JavaFXView implements View, UserInputReceiver {
 		for(Player p : Model.Players) {
 			drawPlayer(p);
 		}
+		
+		boolean assertionsEnabled = false;
+		assert(assertionsEnabled = true);
+		if(assertionsEnabled) {
+			drawUnitBox();
+		}
+	}
+	
+	private void applyPixelRatio() {
+		Affine t = ctx.getTransform();
+			t.setMxx(t.getMxx() * PixelRatio);
+			t.setMxy(t.getMxy() * PixelRatio);
+			//t.setTx(t.getTx() * PixelRatio);
+		ctx.setTransform(t);
 	}
 	
 	public void draw() {
@@ -252,7 +262,7 @@ public class JavaFXView implements View, UserInputReceiver {
 		VIEW_WIDTH = width;
 		VIEW_HEIGHT = height;
 		
-		WorldSize = height;
+		WorldScale = height;
 		Ratio = VIEW_WIDTH / VIEW_HEIGHT;
 	}
 	
@@ -273,5 +283,40 @@ public class JavaFXView implements View, UserInputReceiver {
 		assert(clr != null);
 		
 		this.caveColor = clr;
+	}
+	
+	private void drawUnitBox() {
+		assert(WorldScale > 0 && ctx != null);
+		
+		ctx.setStroke(Color.DEEPPINK);
+		
+		Vector a = toScreen( new Vector(0,0) );
+		Vector b = toScreen( new Vector(1,0) );
+		Vector c = toScreen( new Vector(1,1) );
+		Vector d = toScreen( new Vector(0,1) );
+		
+		ctx.setLineWidth(0.005);
+		ctx.beginPath();
+		
+		ctx.moveTo(a.x, a.y);
+		ctx.lineTo(b.x, b.y);
+		ctx.lineTo(c.x, c.y);
+		ctx.lineTo(d.x, d.y);
+		ctx.closePath();
+		
+		ctx.stroke();
+	}
+	
+	private void setTransform() {
+		ctx.translate(0.5 * VIEW_WIDTH, 0.5 * VIEW_HEIGHT);
+		ctx.rotate(Model.Rotation);
+		//ctx.scale(PixelRatio, 1d);
+		
+		// because scale does not work as expected :/
+		applyPixelRatio();
+		
+		ctx.translate(-0.5 * VIEW_WIDTH, -0.5 * VIEW_HEIGHT);
+		ctx.scale(WorldScale, WorldScale);
+		//ctx.translate(-0.5 * WorldSize * PixelRatio, -0.5 * WorldSize);
 	}
 }
