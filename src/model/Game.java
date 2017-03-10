@@ -2,6 +2,7 @@ package model;
 
 import java.util.Random;
 
+import controller.Config;
 import model.map.Map;
 
 public class Game {
@@ -27,7 +28,7 @@ public class Game {
 		
 		this.Map = new Map(seed);
 		
-		this.Camera = new Camera(0.5);
+		this.Camera = new Camera(Config.PLAYER_Y_POS);
 	}
 	
 	public Game(Player p1) {
@@ -83,6 +84,7 @@ public class Game {
 		assert(RealTimeTotal >= 0d);
 		
 		if(RealTimeTotal < 2d) {
+			// slow start
 			TimeFactor = 0.2d + 0.4d * RealTimeTotal;
 			return;
 		}

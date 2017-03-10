@@ -19,11 +19,13 @@ public class JavaFXView extends view.View implements UserInputReceiver {
 	
 	private boolean resized = false;
 	
-	public JavaFXView(Stage stage) {	
+	public JavaFXView(Stage stage) {
+		// a high resolution might cause performance problems on some devices...
 		super(500, 540, 1d);
 		
 		stage.setTitle(Config.TITLE);
 		
+		// javafx stuff...
 		StackPane root = new StackPane();
 		
 		scene = new Scene(root, VIEW_WIDTH, VIEW_HEIGHT, Color.BLACK);
@@ -51,9 +53,10 @@ public class JavaFXView extends view.View implements UserInputReceiver {
 //		root.getChildren().add(btn);
         
         stage.show();
-        //stage.setFullScreen(true);
+        stage.setFullScreen(Config.LAUNCH_IN_FULLSCREEN);
 	}
 	
+	// allow proper user input setup
 	public void setOnKeyPressed(EventHandler<KeyEvent> evh) {
 		scene.setOnKeyPressed(evh);
 	}

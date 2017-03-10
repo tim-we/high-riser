@@ -12,6 +12,8 @@ public class MapSegment {
 	public final double yBottom;	
 	public final double yTop;
 	
+	// constructors:
+	
 	public MapSegment(double x, double y, double width, double height, double shear) {
 		final double widthHalf = width * 0.5;
 		
@@ -45,7 +47,8 @@ public class MapSegment {
 		this(0, yPos, width, height, 0);
 	}
 	
+	// debugging
 	public String toString() {
-		return "[MapSegment " + Math.round(this.yBottom) + "]";
+		return "[MapSegment " + Math.round(100 * this.yBottom) + "]";
 	}
 }

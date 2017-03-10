@@ -9,6 +9,7 @@ import model.Vector;
 
 public class Map {
 	
+	// for some screen sizes this might have to be a bit higher
 	public static final double bufferMinLength = 1d;
 	
 	public ArrayList<MapSegment> data;
@@ -23,8 +24,12 @@ public class Map {
 		
 		this.data = new ArrayList<MapSegment>();
 		
+		// generate the first (constant) part of the map
+		
+		double startHeight = 0.1;
+		
 		this.data.add(
-			this.lastMapSegment = new MapSegment(0.05, getWidth(0), 0.8-0.05)
+			this.lastMapSegment = new MapSegment(startHeight, getWidth(0), 0.8-startHeight)
 		);
 		
 		this.dir = (rand.nextInt(2) == 0) ? -1 : 1;
@@ -35,6 +40,8 @@ public class Map {
 	}
 	
 	public void update(Camera cam) {
+		assert(cam != null);
+		
 		final double yTop = cam.Position.y + bufferMinLength;
 		
 		// add new map segments
@@ -70,7 +77,7 @@ public class Map {
 	}
 	
 	public void addSegment() {
-		double height = 0.02 + rand.nextDouble() * 0.55;
+		double height = 0.02 + rand.nextDouble() * 0.6;
 		
 		addSegment(height);
 	}
@@ -81,6 +88,7 @@ public class Map {
 		return isWall(p.x, p.y);
 	}
 	
+	// for collision check
 	public boolean isWall(double x, double y) {
 		for(MapSegment ms : data) {
 			
@@ -100,7 +108,7 @@ public class Map {
 		return true;
 	}
 	
-	// width of playable space
+	// width of playable space for a given height
 	private double getWidth(double y) {
 		if(y < 2) { return 0.8; }
 		
@@ -109,11 +117,6 @@ public class Map {
 
 		return w;
 	
-	}
-	
-	public double bottom() {
-		// TODO: implement!
-		return 0;
 	}
 	
 	// for debugging

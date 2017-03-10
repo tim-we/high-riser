@@ -38,20 +38,20 @@ public class UserInput {
 		pressed.remove(code);
 	}
 	
-	public void clear() {
+	public synchronized void clear() {
 		pressed.clear();
 	}
 	
-	public boolean isPressed(KeyCode code) {
+	public synchronized boolean isPressed(KeyCode code) {
 		return pressed.contains(code);
 	}
 	
-	public boolean anyKeyPressed() {
+	public synchronized boolean anyKeyPressed() {
 		if(pressed.size() == 1 && pressed.getFirst() == KeyCode.F11) { return false; }
 		return pressed.size() > 0;
 	}
 	
-	public boolean fullscreenPressed() {
+	public synchronized boolean fullscreenPressed() {
 		return pressed.contains( KeyCode.F11 );
 	}
 }

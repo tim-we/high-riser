@@ -4,7 +4,7 @@ public class Camera {
 	
 	public Vector Position = new Vector();
 	
-	public double viewYOffset = 0.5d;
+	public double viewYOffset = 0.4d;
 	
 	private static final double maxXMovement = 0.01;
 	

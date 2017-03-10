@@ -3,6 +3,7 @@ package view;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import controller.Config;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
@@ -10,7 +11,7 @@ import javafx.scene.paint.Color;
 
 public class LighthouseView extends View {
 	
-	private LighthouseNetwork LHNetwork = new LighthouseNetwork("35", "82TP-HB62-7G5C-K5O5");
+	private LighthouseNetwork LHNetwork = new LighthouseNetwork(Config.USER, Config.PASSWORD);
 	
 	private byte[] data = new byte[28 * 14 * 3];
 	
@@ -27,6 +28,7 @@ public class LighthouseView extends View {
 		
 		setCTX(canvas);
 		
+		// low res settings for radius, tail width & gap fill
 		setValues(0.05, 0.042, 0.03);
 		setCaveColor(new Color(0, 0, 0.15, 1));
 		
@@ -39,8 +41,10 @@ public class LighthouseView extends View {
 		System.out.println("connected to the lighthouse!");
 	}
 	
+	// convert to lighthouse API data format
 	private void toByteArray() {
 		
+		// unfortunately the javafx GraphicsContext/Canvas do not offer methods to read pixels
 		canvas.snapshot(null, img);
 		
 		int i = 0;
@@ -62,6 +66,7 @@ public class LighthouseView extends View {
 	
 	public void draw() {
 		if(System.currentTimeMillis() - lastFrame < MSPerFrame) {
+			// skip frames to reduce framerate
 			return;
 		}		
 		

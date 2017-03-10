@@ -41,6 +41,7 @@ private GraphicsContext ctx;
 		this.ctx = canvas.getGraphicsContext2D();
 	}
 	
+	// the one and only method subclasses have to implement
 	public abstract void draw();
 	
 	/**
@@ -55,6 +56,13 @@ private GraphicsContext ctx;
 			);
 	}
 	
+	/**
+	 * this is absolutely necessary to make it 
+	 * look acceptable on the lighhouse.
+	 * 
+	 * the GraphicsContext.scale method seems to prepend
+	 * the scaling, therefore we need to do this manually...
+	 */
 	private void applyPixelRatio() {
 		Affine t = ctx.getTransform();
 			t.setMxx(t.getMxx() * PixelRatio);
@@ -83,11 +91,11 @@ private GraphicsContext ctx;
 			drawPlayer(p);
 		}
 		
-		boolean assertionsEnabled = false;
+		/*boolean assertionsEnabled = false;
 		assert(assertionsEnabled = true);
 		if(assertionsEnabled) {
 			drawUnitBox();
-		}
+		}*/
 	}
 	
 	private void drawMapSegment(MapSegment ms) {
@@ -110,7 +118,7 @@ private GraphicsContext ctx;
 		
 		ctx.fill();
 		
-		if(Config.fillGaps) {
+		if(Config.FILLGAPS) {
 			ctx.setStroke(caveColor);
 			ctx.setStroke(ctx.getFill());
 			ctx.setLineWidth(gapFillWidth);
@@ -190,6 +198,7 @@ private GraphicsContext ctx;
 		this.caveColor = clr;
 	}
 	
+	@SuppressWarnings("unused")
 	private void drawUnitBox() {
 		assert(WorldScale > 0 && ctx != null);
 		

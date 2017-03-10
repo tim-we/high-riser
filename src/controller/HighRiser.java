@@ -40,20 +40,19 @@ public class HighRiser extends Application {
 		stage.setResizable(false);
 		view = new JavaFXView(stage);
 		
-		if(Config.enableLighthouse) {
+		if(Config.ENABLE_LIGHTHOUSE) {
 			try {
 				lhview = new LighthouseView();
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
 				System.err.println("Error: Unknown host.");
 				lhview = null;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				System.err.println("Error: IO Exception.");
 				lhview = null;
 			}
 		}
 		
+		// creates model & player instances
 		newGame();
 		
 		view.setModel(game);
@@ -64,7 +63,7 @@ public class HighRiser extends Application {
 		
 		lastFrame = System.nanoTime();
 		
-		// start main loop
+		// the update method gets called for every frame
 		main = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -72,6 +71,7 @@ public class HighRiser extends Application {
             }
         };
         
+        // "start main loop"
         main.start();
         
         //update(System.nanoTime());
@@ -108,6 +108,8 @@ public class HighRiser extends Application {
 		this.lastFrame = now;
 	}
 	
+	// state handlers:
+	
 	private void handleInGame(double delta) {
 		handleUserInput();
 		
@@ -134,7 +136,8 @@ public class HighRiser extends Application {
 		game.State = GameState.AwaitingInput;
 	}
 	
-	private synchronized void handleUserInput() {
+	
+	private void handleUserInput() {
 		for(Player player : game.Players) {
 			player.setUserInput(
 					input.isPressed(player.keycode)
@@ -157,6 +160,9 @@ public class HighRiser extends Application {
 			Player p1 = new Player();
 			game = new Game(p1);
 		}
+		
+		view.setModel(game);
+		if(lhview != null) { lhview.setModel(game); }
 	}
 	
 }

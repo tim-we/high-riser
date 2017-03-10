@@ -21,6 +21,11 @@ public class Player {
 		this(Color.RED, 0);
 	}
 	
+	/**
+	 * constructor.
+	 * @param tailColor
+	 * @param offsetX offset from the center (multiplayer start position)
+	 */
 	public Player(Color tailColor, double offsetX) {
 		this.Position = new Vector(offsetX, Config.PLAYER_Y_POS);
 		this.Velocity = new Vector(0, Config.SPEED_Y);
@@ -48,6 +53,7 @@ public class Player {
 		this.userInput = pressed;
 	}
 	
+	// head color
 	public Color getColor() {
 		return Color.WHITE;
 	}
