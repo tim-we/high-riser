@@ -3,11 +3,12 @@ package view;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-public class LighthouseView extends JavaFXView implements View {
+public class LighthouseView extends View {
 	
 	private LighthouseNetwork LHNetwork = new LighthouseNetwork();
 	
@@ -19,10 +20,15 @@ public class LighthouseView extends JavaFXView implements View {
 	private long lastFrame;
 	private int MSPerFrame = 33; // milliseconds per frame
 	
+	private Canvas canvas = new Canvas(28,14);
+	
 	public LighthouseView() throws UnknownHostException, IOException {
-		super();
+		super(28,14,2);
 		
-		setSize(28,14);
+		setCTX(canvas);
+		
+		setValues(0.05, 0.042, 0.03);
+		setCaveColor(new Color(0, 0, 0.15, 1));
 		
 		setFPS(30);
 		
@@ -75,16 +81,5 @@ public class LighthouseView extends JavaFXView implements View {
 		
 		MSPerFrame = 1000 / fps;
 	}
-	
-	/*
-	// constants
-	
-	public static final int WINDOW_WIDTH = 10;	
-	public static final int WINDOW_HEIGHT = 16;
-	
-	public static final int WINDOW_X_OFFSET = 3;	
-	public static final int WINDOW_Y_OFFSET = 12;
-	
-	*/
 	
 }

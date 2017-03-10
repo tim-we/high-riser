@@ -126,9 +126,10 @@ public class HighRiser extends Application {
 	}
 	
 	private void handleGameOver() {
+		System.out.println("Game over.");
+		System.out.println("Press any key to try again...");
 		newGame();
 		game.State = GameState.AwaitingInput;
-		System.out.println("Press any key to try again...");
 	}
 	
 	private synchronized void handleUserInput() {
