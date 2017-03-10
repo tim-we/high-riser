@@ -21,9 +21,11 @@ public class HighRiser extends Application {
 	public final static double DBL_SEC = (double) SECOND;
 	
 	private long lastFrame;
+	
+	private Stage stage;
 
 	private View view;
-	private View lhview;
+	private View lhview = null;
 	private Game game;
 	private AnimationTimer main;
 	private UserInput input;
@@ -32,17 +34,20 @@ public class HighRiser extends Application {
 	public void start(Stage primaryStage) {
 		
 		// set up view
-		primaryStage.setResizable(false);
-		view = new JavaFXView(primaryStage);
+		stage = primaryStage;
+		stage.setResizable(false);
+		view = new JavaFXView(stage);
 		
-		try {
-			lhview = new LighthouseView();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(Config.enableLighthouse) {
+			try {
+				lhview = new LighthouseView();
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				System.err.println("Error: Unknown host.");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.err.println("Error: IO Exception.");
+			}
 		}
 		
 		Player p1 = new Player();
@@ -67,6 +72,9 @@ public class HighRiser extends Application {
         main.start();
         
         //update(System.nanoTime());
+        
+        System.out.println("Game started.");
+        System.out.println("Press [F11] to go fullscreen.");
 	}
 	
 	/**
@@ -97,6 +105,10 @@ public class HighRiser extends Application {
 			player.setUserInput(
 					input.isPressed(player.keycode)
 				);
+		}
+		
+		if(!stage.isFullScreen() && input.fullscreenPressed()) {
+			stage.setFullScreen(true);
 		}
 	}
 	

@@ -57,7 +57,7 @@ public class Map {
 							this.lastMapSegment,
 							getWidth(this.lastMapSegment.yTop + height),
 							height,
-							this.dir
+							this.dir * Config.SHEARING
 						);
 		
 		this.data.add(ms);

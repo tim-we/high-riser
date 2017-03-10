@@ -31,14 +31,16 @@ public class JavaFXView implements View, UserInputReceiver {
 	
 	protected double VIEW_WIDTH = 500;
 	protected double VIEW_HEIGHT = 540;
-	private boolean resized = false;
+	private double Ratio = VIEW_WIDTH / VIEW_HEIGHT;
+	private double PixelRatio = 1d;
+	//private boolean resized = false;
 	
 	public static final int BORDER = 10;
 	
-	private final Affine id;
+	private final Affine id; // identity
 	
-	private static final double PLAYER_RADIUS = 0.04;
-	private static final double TAIL_WIDTH = 0.035;
+	private static final double PLAYER_RADIUS = 0.03;
+	private static final double TAIL_WIDTH = 0.02;
 	
 	public JavaFXView() {
 		canvas = new Canvas(VIEW_WIDTH, VIEW_HEIGHT);
@@ -46,6 +48,7 @@ public class JavaFXView implements View, UserInputReceiver {
 		this.ctx = ctx;
 		
 		setSize(28,14);
+		setPixelRatio(392d/364d);
 		
 		this.id = ctx.getTransform();
 	}
@@ -131,7 +134,7 @@ public class JavaFXView implements View, UserInputReceiver {
 		canvas.setWidth(VIEW_WIDTH);
 		canvas.setHeight(VIEW_HEIGHT);
 		
-		resized = false;
+		//resized = false;
 	}
 	
 	protected void render() {
@@ -147,7 +150,7 @@ public class JavaFXView implements View, UserInputReceiver {
 		ctx.translate(0.5 * VIEW_WIDTH, 0.5 * VIEW_HEIGHT);
 		ctx.rotate(Model.Rotation);
 		ctx.translate(-0.5 * VIEW_WIDTH, -0.5 * VIEW_HEIGHT);
-		ctx.scale(VIEW_WIDTH, VIEW_HEIGHT);
+		ctx.scale(VIEW_HEIGHT * PixelRatio, VIEW_HEIGHT);
 		
 		for(MapSegment ms : Model.Map.data) {
 			drawMapSegment(ms);
@@ -167,10 +170,10 @@ public class JavaFXView implements View, UserInputReceiver {
 	private void drawMapSegment(MapSegment ms) {
 		assert(ms != null);
 		
-		Vector a = toScreen(Camera.toViewport(ms.bottomLeft));
-		Vector b = toScreen(Camera.toViewport(ms.bottomRight));
-		Vector c = toScreen(Camera.toViewport(ms.topRight));
-		Vector d = toScreen(Camera.toViewport(ms.topLeft));
+		Vector a = toScreen(Camera.toViewport(ms.bottomLeft, Ratio));
+		Vector b = toScreen(Camera.toViewport(ms.bottomRight, Ratio));
+		Vector c = toScreen(Camera.toViewport(ms.topRight, Ratio));
+		Vector d = toScreen(Camera.toViewport(ms.topLeft, Ratio));
 		
 		//ctx.setFill(new Color(0, 0, 0.15, 1));
 		ctx.setFill(Color.BLACK);
@@ -195,7 +198,7 @@ public class JavaFXView implements View, UserInputReceiver {
 	private void drawPlayer(Player p) {
 		assert(p != null);
 		
-		Vector pos = toScreen( Camera.toViewport(p.Position) );
+		Vector pos = toScreen( Camera.toViewport(p.Position, Ratio) );
 		
 		drawTail(pos, p.Tail);
 		
@@ -218,7 +221,7 @@ public class JavaFXView implements View, UserInputReceiver {
 		ctx.moveTo(start.x, start.y);
 		
 		for(Vector point : tail.points) {
-			Vector x = toScreen( Camera.toViewport(point) );
+			Vector x = toScreen( Camera.toViewport(point, Ratio) );
 			
 			ctx.lineTo(x.x, x.y);
 		}
@@ -236,5 +239,11 @@ public class JavaFXView implements View, UserInputReceiver {
 	public void setSize(double width, double height) {
 		VIEW_WIDTH = width;
 		VIEW_HEIGHT = height;
-	}	
+		
+		Ratio = VIEW_WIDTH / VIEW_HEIGHT;
+	}
+	
+	public void setPixelRatio(double r) {
+		this.PixelRatio = r;
+	}
 }

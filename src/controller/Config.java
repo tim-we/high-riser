@@ -22,4 +22,8 @@ public class Config {
 	
 	public static final boolean fillGaps = true;
 	
+	public static final boolean enableLighthouse = true;
+	
+	public static final double SHEARING = 0.8d;
+	
 }

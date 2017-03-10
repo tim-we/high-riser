@@ -49,4 +49,8 @@ public class UserInput {
 	public boolean anyKeyPressed() {
 		return pressed.size() > 0;
 	}
+	
+	public boolean fullscreenPressed() {
+		return pressed.contains( KeyCode.F11 );
+	}
 }

@@ -5,7 +5,6 @@ public class Camera {
 	public Vector Position = new Vector();
 	
 	public double viewYOffset = 0.5d;
-	public double viewXOffset = 0.5d;
 	
 	public Camera(double yPos) {
 		this.Position.y = yPos;
@@ -32,9 +31,9 @@ public class Camera {
 		}
 	}
 	
-	public Vector toViewport(Vector p) {
+	public Vector toViewport(Vector p, double ratio) {
 		return new Vector(
-				p.x - Position.x + viewXOffset,
+				p.x - Position.x + 0.5 * ratio,
 				p.y - Position.y + viewYOffset
 			);
 	}
