@@ -44,9 +44,11 @@ public class HighRiser extends Application {
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				System.err.println("Error: Unknown host.");
+				lhview = null;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				System.err.println("Error: IO Exception.");
+				lhview = null;
 			}
 		}
 		

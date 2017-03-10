@@ -29,9 +29,12 @@ public class JavaFXView implements View, UserInputReceiver {
 	private Game Model;
 	private Camera Camera;
 	
+	private Color caveColor = Color.BLACK;
+	
 	protected double VIEW_WIDTH = 500;
 	protected double VIEW_HEIGHT = 540;
 	private double Ratio = VIEW_WIDTH / VIEW_HEIGHT;
+	private double WorldSize = 1d;
 	private double PixelRatio = 1d;
 	//private boolean resized = false;
 	
@@ -39,8 +42,9 @@ public class JavaFXView implements View, UserInputReceiver {
 	
 	private final Affine id; // identity
 	
-	private static final double PLAYER_RADIUS = 0.03;
-	private static final double TAIL_WIDTH = 0.02;
+	private double PLAYER_RADIUS = 0.02;
+	private double TAIL_WIDTH = 0.015;
+	private double gapFillWidth = 0.002;
 	
 	public JavaFXView() {
 		canvas = new Canvas(VIEW_WIDTH, VIEW_HEIGHT);
@@ -48,7 +52,13 @@ public class JavaFXView implements View, UserInputReceiver {
 		this.ctx = ctx;
 		
 		setSize(28,14);
-		setPixelRatio(392d/364d);
+		//setPixelRatio(392d/364d);
+		setPixelRatio(2d);
+		
+		setValues(0.05, 0.042, 0.03);
+		//setValues(0, 0.045, 0.03);
+		
+		setCaveColor(new Color(0, 0, 0.15, 1));
 		
 		this.id = ctx.getTransform();
 	}
@@ -127,15 +137,15 @@ public class JavaFXView implements View, UserInputReceiver {
 			);
 	}
 	
-	private void applyResize() {
+	/*private void applyResize() {
 		VIEW_WIDTH = scene.getWidth();
 		VIEW_HEIGHT = scene.getHeight();
 		
 		canvas.setWidth(VIEW_WIDTH);
 		canvas.setHeight(VIEW_HEIGHT);
 		
-		//resized = false;
-	}
+		resized = false;
+	}*/
 	
 	protected void render() {
 		assert(this.Model != null);
@@ -149,8 +159,10 @@ public class JavaFXView implements View, UserInputReceiver {
 		// set up affine transform
 		ctx.translate(0.5 * VIEW_WIDTH, 0.5 * VIEW_HEIGHT);
 		ctx.rotate(Model.Rotation);
+		ctx.scale(PixelRatio, 1d);
 		ctx.translate(-0.5 * VIEW_WIDTH, -0.5 * VIEW_HEIGHT);
-		ctx.scale(VIEW_HEIGHT * PixelRatio, VIEW_HEIGHT);
+		ctx.scale(WorldSize, WorldSize);
+		//ctx.translate(-0.5 * WorldSize * PixelRatio, -0.5 * WorldSize);
 		
 		for(MapSegment ms : Model.Map.data) {
 			drawMapSegment(ms);
@@ -175,8 +187,7 @@ public class JavaFXView implements View, UserInputReceiver {
 		Vector c = toScreen(Camera.toViewport(ms.topRight, Ratio));
 		Vector d = toScreen(Camera.toViewport(ms.topLeft, Ratio));
 		
-		//ctx.setFill(new Color(0, 0, 0.15, 1));
-		ctx.setFill(Color.BLACK);
+		ctx.setFill(caveColor);
 		
 		ctx.beginPath();
 		ctx.moveTo(a.x, a.y);
@@ -189,8 +200,9 @@ public class JavaFXView implements View, UserInputReceiver {
 		ctx.fill();
 		
 		if(Config.fillGaps) {
+			ctx.setStroke(caveColor);
 			ctx.setStroke(ctx.getFill());
-			ctx.setLineWidth(0.002);
+			ctx.setLineWidth(gapFillWidth);
 			ctx.stroke();
 		}
 	}
@@ -240,10 +252,26 @@ public class JavaFXView implements View, UserInputReceiver {
 		VIEW_WIDTH = width;
 		VIEW_HEIGHT = height;
 		
+		WorldSize = height;
 		Ratio = VIEW_WIDTH / VIEW_HEIGHT;
 	}
 	
 	public void setPixelRatio(double r) {
+		assert(r != 0);
 		this.PixelRatio = r;
+	}
+	
+	public void setValues(double radius, double tail, double gaps) {
+		assert(radius >= 0 && tail >= 0 && gaps >= 0);
+		
+		PLAYER_RADIUS = radius;
+		TAIL_WIDTH = tail;
+		gapFillWidth = gaps;
+	}
+	
+	public void setCaveColor(Color clr) {
+		assert(clr != null);
+		
+		this.caveColor = clr;
 	}
 }

@@ -9,7 +9,7 @@ public class Tail {
 	
 	public LinkedList<Vector> points;
 	
-	private static final int Length = 30;
+	private static final int Length = 42;
 	
 	private static final double pointDelay = 0.04d; // seconds
 	

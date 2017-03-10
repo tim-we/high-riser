@@ -24,6 +24,6 @@ public class Config {
 	
 	public static final boolean enableLighthouse = true;
 	
-	public static final double SHEARING = 0.8d;
+	public static final double SHEARING = 0.9d;
 	
 }
