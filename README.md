@@ -2,6 +2,9 @@
 
 [Runnable Jar File](https://git.informatik.uni-kiel.de/stu126998/high-riser/raw/master/releases/highriser-v1.jar)
 
+## video:
+
+[view on Instagram](https://www.instagram.com/p/BReTM5pDlHj/)
 
 # high-riser
 (desktop view & lighthouse view)
