@@ -13,7 +13,7 @@ public class Game {
 	
 	public Camera Camera;
 	
-	public State State;
+	public GameState State = GameState.AwaitingInput;
 	
 	public double Rotation = 0d; // in degrees :/
 	
@@ -89,6 +89,16 @@ public class Game {
 		}
 		
 		TimeFactor = 1d;
+	}
+	
+	public int numPlayersAlive() {
+		int n = 0;
+		
+		for(Player p : Players) {
+			if(p.isAlive()) { n++; }
+		}
+		
+		return n;
 	}
 	
 }

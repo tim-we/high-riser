@@ -6,8 +6,11 @@ import java.net.UnknownHostException;
 import controller.input.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Game;
+import model.GameState;
 import model.Player;
 import view.*;
 
@@ -51,8 +54,7 @@ public class HighRiser extends Application {
 			}
 		}
 		
-		Player p1 = new Player();
-		game = new Game(p1);
+		newGame();
 		
 		view.setModel(game);
 		if(lhview != null) { lhview.setModel(game); }
@@ -87,18 +89,44 @@ public class HighRiser extends Application {
 		long diff = now - lastFrame;
 		double delta = diff / DBL_SEC;
 		
-		handleUserInput();
-		
-		// update state
-		game.update(delta);
+		switch(game.State) {
+			case AwaitingInput:
+				handleAwaitingInput();
+				break;
+			case GameOver:
+				handleGameOver();
+				break;
+			default:
+				handleInGame(delta);
+		}
 		
 		// update view(s)
 		view.draw();
 		if(lhview != null) { lhview.draw(); }
 		
 		this.lastFrame = now;
+	}
+	
+	private void handleInGame(double delta) {
+		handleUserInput();
 		
-		// main.stop();
+		// update state
+		game.update(delta);
+		
+		if(game.numPlayersAlive() == 0) {
+			game.State = GameState.GameOver;
+		}
+	}
+	
+	private void handleAwaitingInput() {
+		if(input.anyKeyPressed()) {
+			game.State = GameState.InGame;
+		}
+	}
+	
+	private void handleGameOver() {
+		newGame();
+		game.State = GameState.AwaitingInput;
 	}
 	
 	private synchronized void handleUserInput() {
@@ -110,6 +138,19 @@ public class HighRiser extends Application {
 		
 		if(!stage.isFullScreen() && input.fullscreenPressed()) {
 			stage.setFullScreen(true);
+		}
+	}
+	
+	private void newGame() {
+		
+		if(Config.NUM_PLAYERS == 2) {
+			Player p1 = new Player(Color.RED, -0.03);
+			Player p2 = new Player(Color.BLUE, 0.03);
+			p2.keycode = KeyCode.UP;
+			game = new Game(p1,p2);
+		} else {
+			Player p1 = new Player();
+			game = new Game(p1);
 		}
 	}
 	
