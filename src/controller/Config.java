@@ -18,6 +18,6 @@ public class Config {
 	
 	public static final double SHEARING = 0.8d;
 	
-	public static int NUM_PLAYERS = 2;
+	public static int NUM_PLAYERS = 1;
 	
 }
