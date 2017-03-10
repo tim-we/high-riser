@@ -6,7 +6,11 @@ public class Camera {
 	
 	public double viewYOffset = 0.5d;
 	
+	private static final double maxXMovement = 0.01;
+	
 	public Camera(double yPos) {
+		assert(maxXMovement > 0);
+		
 		this.Position.y = yPos;
 	}
 	
@@ -18,15 +22,23 @@ public class Camera {
 			for(Player p : model.Players) {
 				if(p.isAlive()) {
 					x += p.Position.x;
-					y += p.Position.y;
+					y = Math.max(y, p.Position.y);
 					n++;
 				}
 			}
 			
 			if(n > 0) {
-				double f = 1d / (double)n;
+				// limit x movement
+				double prevX = Position.x;
+				double newX = x / n;
+				double d = newX - prevX;
+				double dAbs = Math.abs(d);
 				
-				this.Position = new Vector(f * x, f * y);
+				if(dAbs > maxXMovement) {
+					d *= maxXMovement / dAbs;
+				}
+				
+				this.Position = new Vector(prevX + d, y);
 			}
 		}
 	}

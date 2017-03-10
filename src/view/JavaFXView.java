@@ -2,8 +2,8 @@ package view;
 
 import controller.Config;
 import controller.input.UserInputReceiver;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+//import javafx.beans.value.ChangeListener;
+//import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -12,7 +12,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
-import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 import model.Camera;
 import model.Game;

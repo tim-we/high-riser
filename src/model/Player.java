@@ -3,7 +3,6 @@ package model;
 import controller.Config;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import model.map.Map;
 
 public class Player {
 	public Vector Position;

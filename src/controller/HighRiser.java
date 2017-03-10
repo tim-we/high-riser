@@ -78,6 +78,7 @@ public class HighRiser extends Application {
         
         System.out.println("Game started.");
         System.out.println("Press [F11] to go fullscreen.");
+        System.out.println("Press any key to start the game...");
 	}
 	
 	/**
@@ -127,6 +128,7 @@ public class HighRiser extends Application {
 	private void handleGameOver() {
 		newGame();
 		game.State = GameState.AwaitingInput;
+		System.out.println("Press any key to try again...");
 	}
 	
 	private synchronized void handleUserInput() {

@@ -2,7 +2,6 @@ package model;
 
 import java.util.Random;
 
-import controller.Config;
 import model.map.Map;
 
 public class Game {

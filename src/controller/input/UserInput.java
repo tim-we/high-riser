@@ -47,6 +47,7 @@ public class UserInput {
 	}
 	
 	public boolean anyKeyPressed() {
+		if(pressed.size() == 1 && pressed.getFirst() == KeyCode.F11) { return false; }
 		return pressed.size() > 0;
 	}
 	

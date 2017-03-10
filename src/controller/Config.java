@@ -16,8 +16,8 @@ public class Config {
 	
 	public static final boolean enableLighthouse = true;
 	
-	public static final double SHEARING = 0.9d;
+	public static final double SHEARING = 0.8d;
 	
-	public static int NUM_PLAYERS = 1;
+	public static int NUM_PLAYERS = 2;
 	
 }
