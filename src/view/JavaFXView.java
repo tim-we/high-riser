@@ -2,8 +2,8 @@ package view;
 
 import controller.Config;
 import controller.input.UserInputReceiver;
-//import javafx.beans.value.ChangeListener;
-//import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -17,7 +17,7 @@ public class JavaFXView extends view.View implements UserInputReceiver {
 	private Canvas canvas;
 	private Scene scene;
 	
-	//private boolean resized = false;
+	private boolean resized = false;
 	
 	public JavaFXView(Stage stage) {	
 		super(500, 540, 1d);
@@ -29,7 +29,7 @@ public class JavaFXView extends view.View implements UserInputReceiver {
 		scene = new Scene(root, VIEW_WIDTH, VIEW_HEIGHT, Color.BLACK);
 		
         stage.setScene(scene);
-        //setUpResizeListener(scene);
+        setUpResizeListener(scene);
         
         // canvas
         canvas = new Canvas(VIEW_WIDTH, VIEW_HEIGHT);           
@@ -62,7 +62,7 @@ public class JavaFXView extends view.View implements UserInputReceiver {
 		scene.setOnKeyReleased(evh);
 	}
 	
-	/*private void setUpResizeListener(Scene scene) {
+	private void setUpResizeListener(Scene scene) {
 		scene.widthProperty().addListener(new ChangeListener<Number>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
@@ -76,20 +76,19 @@ public class JavaFXView extends view.View implements UserInputReceiver {
 		        resized = true;
 		    }
 		});
-	}*/
+	}
 	
-	/*private void applyResize() {
-		VIEW_WIDTH = scene.getWidth();
-		VIEW_HEIGHT = scene.getHeight();
+	private void applyResize() {
+		setSize(scene.getWidth(), scene.getHeight());
 		
 		canvas.setWidth(VIEW_WIDTH);
 		canvas.setHeight(VIEW_HEIGHT);
-		
+			
 		resized = false;
-	}*/
+	}
 	
 	public void draw() {
-		//if(this.resized) { applyResize(); }
+		if(this.resized) { applyResize(); }
 		
 		render();
 	}

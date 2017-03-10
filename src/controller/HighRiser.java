@@ -120,7 +120,9 @@ public class HighRiser extends Application {
 	}
 	
 	private void handleAwaitingInput() {
-		if(input.anyKeyPressed()) {
+		if(!stage.isFullScreen() && input.fullscreenPressed()) {
+			stage.setFullScreen(true);
+		} else if(input.anyKeyPressed()) {
 			game.State = GameState.InGame;
 		}
 	}
@@ -147,8 +149,8 @@ public class HighRiser extends Application {
 	private void newGame() {
 		
 		if(Config.NUM_PLAYERS == 2) {
-			Player p1 = new Player(Color.RED, -0.03);
-			Player p2 = new Player(Color.BLUE, 0.03);
+			Player p1 = new Player(Color.RED, -Config.MULTIPLAYER_OFFSET);
+			Player p2 = new Player(Color.BLUE, Config.MULTIPLAYER_OFFSET);
 			p2.keycode = KeyCode.UP;
 			game = new Game(p1,p2);
 		} else {

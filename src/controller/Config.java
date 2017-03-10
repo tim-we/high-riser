@@ -14,10 +14,12 @@ public class Config {
 	
 	public static final boolean fillGaps = true;
 	
-	public static final boolean enableLighthouse = true;
+	public static final boolean enableLighthouse = false;//true;
 	
 	public static final double SHEARING = 0.8d;
 	
-	public static int NUM_PLAYERS = 1;
+	public static int NUM_PLAYERS = 2;
+	
+	public static final double MULTIPLAYER_OFFSET = 0.1;
 	
 }

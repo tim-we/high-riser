@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 
 public class LighthouseView extends View {
 	
-	private LighthouseNetwork LHNetwork = new LighthouseNetwork();
+	private LighthouseNetwork LHNetwork = new LighthouseNetwork("35", "82TP-HB62-7G5C-K5O5");
 	
 	private byte[] data = new byte[28 * 14 * 3];
 	
@@ -35,6 +35,8 @@ public class LighthouseView extends View {
 		lastFrame = System.currentTimeMillis();
 		
 		LHNetwork.connect();
+		
+		System.out.println("connected to the lighthouse!");
 	}
 	
 	private void toByteArray() {

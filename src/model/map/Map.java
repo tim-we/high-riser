@@ -102,10 +102,10 @@ public class Map {
 	
 	// width of playable space
 	private double getWidth(double y) {
-		if(y < 2) { return 0.6; }
+		if(y < 2) { return 0.8; }
 		
-		double f = (y-2) * 0.05;
-		double w = Math.max(0.3,  0.6 - f * 0.3);
+		double f = (y-2) * 0.07;
+		double w = Math.max(0.25,  0.8 - f * 0.3);
 
 		return w;
 	
