@@ -1,0 +1,1 @@
+![lighthouse view and desktop view](https://git.informatik.uni-kiel.de/stu126998/high-riser/raw/master/media/lighthouse-view.png)
