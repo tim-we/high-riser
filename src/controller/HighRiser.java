@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import controller.input.*;
-import controller.state.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;

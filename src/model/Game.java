@@ -84,7 +84,7 @@ public class Game {
 		assert(RealTimeTotal >= 0d);
 		
 		if(RealTimeTotal < 2d) {
-			TimeFactor = 0.4d + 0.3d * RealTimeTotal;
+			TimeFactor = 0.2d + 0.4d * RealTimeTotal;
 			return;
 		}
 		

@@ -70,7 +70,7 @@ public class Map {
 	}
 	
 	public void addSegment() {
-		double height = 0.1 + rand.nextDouble() * 0.42;
+		double height = 0.02 + rand.nextDouble() * 0.55;
 		
 		addSegment(height);
 	}
@@ -102,7 +102,12 @@ public class Map {
 	
 	// width of playable space
 	private double getWidth(double y) {
-		return 0.5;
+		if(y < 2) { return 0.6; }
+		
+		double f = (y-2) * 0.05;
+		double w = Math.max(0.3,  0.6 - f * 0.3);
+
+		return w;
 	
 	}
 	
