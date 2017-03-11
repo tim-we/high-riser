@@ -2,6 +2,8 @@ package controller;
 
 public class Config {
 	
+	// GAME SETTINGS:
+	
 	public static final double PLAYER_Y_POS = 0.45;
 	
 	public static final double SPEED_Y = 0.5;
@@ -14,23 +16,29 @@ public class Config {
 	
 	public static final boolean FILLGAPS = true;
 	
-	public static final boolean ENABLE_LIGHTHOUSE = false; //true;
-	
 	public static final double SHEARING = 0.8d;
 	
-	public static int NUM_PLAYERS = 1;
+	public static final double ROTATION_SPEED = 9; // degrees per second
+	
+	
+	// MULTIPLAYER SETTINGS:
+	
+	public static int NUM_PLAYERS = 2;
 	
 	public static final double MULTIPLAYER_OFFSET = 0.1;
+	
+	public static final boolean ENABLE_LIGHTHOUSE = false; //true;
 	
 	public static final String USER = "42";
 	
 	public static final String PASSWORD = "enter password here";
 	
+	
+	
+	
 	/* for some PCs the higher resolution might be problem
 	 * (performance)
 	 */
 	public static final boolean LAUNCH_IN_FULLSCREEN = false;
-	
-	public static final double ROTATION_SPEED = 9; // degrees per second
 	
 }

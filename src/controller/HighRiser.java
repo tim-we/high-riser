@@ -55,9 +55,6 @@ public class HighRiser extends Application {
 		// creates model & player instances
 		newGame();
 		
-		view.setModel(game);
-		if(lhview != null) { lhview.setModel(game); }
-		
 		// set up user input (temp solution)	
 		input = new UserInput((UserInputReceiver) view);
 		
@@ -106,6 +103,8 @@ public class HighRiser extends Application {
 		if(lhview != null) { lhview.draw(); }
 		
 		this.lastFrame = now;
+		
+		checkFullscreen();
 	}
 	
 	// state handlers:
@@ -117,23 +116,38 @@ public class HighRiser extends Application {
 		game.update(delta);
 		
 		if(game.numPlayersAlive() == 0) {
+			game.GameOver = true;
 			game.State = GameState.GameOver;
+			
+			System.out.println("Game over.");
+			System.out.println("Press any key to try again...");
+			
+			input.clear();
+		}
+	}
+	
+	private void checkFullscreen() {
+		if(!stage.isFullScreen() && input.fullscreenPressed()) {
+			stage.setFullScreen(true);
 		}
 	}
 	
 	private void handleAwaitingInput() {
-		if(!stage.isFullScreen() && input.fullscreenPressed()) {
-			stage.setFullScreen(true);
-		} else if(input.anyKeyPressed()) {
+		if(input.anyKeyPressed()) {
 			game.State = GameState.InGame;
 		}
 	}
 	
 	private void handleGameOver() {
-		System.out.println("Game over.");
-		System.out.println("Press any key to try again...");
-		newGame();
-		game.State = GameState.AwaitingInput;
+		// waiting for user input
+		if(input.anyKeyPressed()) {
+			System.out.println("New Game.");
+			newGame();
+			game.State = GameState.AwaitingInput;
+			
+			input.clear();
+			System.out.println("Press any key to start...");
+		}	
 	}
 	
 	
@@ -142,10 +156,6 @@ public class HighRiser extends Application {
 			player.setUserInput(
 					input.isPressed(player.keycode)
 				);
-		}
-		
-		if(!stage.isFullScreen() && input.fullscreenPressed()) {
-			stage.setFullScreen(true);
 		}
 	}
 	

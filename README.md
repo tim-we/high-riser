@@ -1,6 +1,11 @@
-## Release Candidate V1:
+## Release Candidate V1.1:
 
-[Runnable Jar File](https://git.informatik.uni-kiel.de/stu126998/high-riser/raw/master/releases/highriser-v1.jar)
+[Runnable Jar File](https://git.informatik.uni-kiel.de/stu126998/high-riser/raw/master/releases/highriser-v1.1.jar)
+
+## controls:
+
+Player 1: `SPACE` (red)
+Player 2: `ARROW UP` (blue)
 
 ## video:
 

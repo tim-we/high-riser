@@ -21,6 +21,8 @@ public class Game {
 	
 	public double RealTimeTotal = 0d;
 	
+	public boolean GameOver = false;
+	
 	private Game() {
 		Random rand = new Random();
 		
