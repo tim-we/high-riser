@@ -5,6 +5,7 @@
 ## controls:
 
 Player 1: `SPACE` (red)
+
 Player 2: `ARROW UP` (blue)
 
 ## video:
