@@ -11,7 +11,7 @@ A simple game written in Java for either one or two players designed to be playa
 
 # Media
 
-[view on Instagram](https://www.instagram.com/p/BReTM5pDlHj/)
+[Video](https://www.instagram.com/p/BReTM5pDlHj/)
 
 (desktop view & lighthouse view)
 ![](media/lighthouse-view.png)
