@@ -1,6 +1,6 @@
 ## Release Candidate V1.1:
 
-[Runnable Jar File](https://git.informatik.uni-kiel.de/stu126998/high-riser/raw/master/releases/highriser-v1.1.jar)
+[Runnable Jar File](https://github.com/tim-we/high-riser/releases/download/v1.1/highriser-v1.1.jar)
 
 ## controls:
 
