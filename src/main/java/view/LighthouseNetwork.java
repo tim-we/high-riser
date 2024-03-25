@@ -33,7 +33,7 @@ public class LighthouseNetwork {
 	 *
 	 * @param user
 	 *            The hostname of the server to connect to.
-	 * @param port
+	 * @param password
 	 *            The port to be used.
 	 */
 	public LighthouseNetwork(String user, String password) {
